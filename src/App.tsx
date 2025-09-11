@@ -444,13 +444,13 @@ export default function App() {
       {/* NAV */}
 <header
   className={
-    "fixed inset-x-0 top-0 z-50 " +
+    "sticky top-0 z-40 " +
     (isDark
       ? "border-b border-white/10 bg-slate-950/70 backdrop-blur"
       : "border-b border-slate-200 bg-white/70 backdrop-blur")
   }
 >
-  <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-6 py-4 sm:px-8">
+  <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-6 py-6 sm:px-8">
     <a href="#top" className="flex items-center gap-3">
       <div className="relative">
         <div
@@ -531,6 +531,7 @@ export default function App() {
     </div>
   </div>
 </header>
+
 
 {/* spacer to offset fixed header height */}
 <div aria-hidden className="h-[72px]" />
