@@ -442,74 +442,99 @@ export default function App() {
   return (
     <div className={isDark ? "min-h-screen bg-slate-950 text-white" : "min-h-screen bg-gradient-to-b from-indigo-50 via-white to-white text-slate-900"}>
       {/* NAV */}
-      <header className="w-full px-6 py-6 sm:px-8">
-        <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between">
-          <a href="#top" className="flex items-center gap-3">
-            <div className="relative">
-              <div
-                className={
-                  (isDark
-                    ? "absolute -inset-1 rounded-xl bg-gradient-to-r from-fuchsia-500 via-cyan-400 to-emerald-400 opacity-50 blur"
-                    : "absolute -inset-1 rounded-xl bg-gradient-to-r from-fuchsia-400 via-cyan-400 to-emerald-400 opacity-50 blur")
-                }
-              />
-              <div
-                className={
-                  (isDark
-                    ? "relative grid h-9 w-9 place-items-center rounded-xl bg-slate-900 ring-1 ring-white/15"
-                    : "relative grid h-9 w-9 place-items-center rounded-xl bg-white ring-1 ring-slate-200")
-                }
-              >
-                <Layout className={isDark ? "h-5 w-5 text-white/90" : "h-5 w-5 text-slate-900"} />
-              </div>
-            </div>
-            <span className="font-semibold tracking-tight">Akhil</span>
-          </a>
-          <nav className="hidden gap-6 text-sm md:flex">
-            <a href="#work" className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}>
-              Work
-            </a>
-            <a href="#experience" className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}>
-              Experience
-            </a>
-            <a href="#stack" className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}>
-              Stack
-            </a>
-            <a href="#contact" className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}>
-              Contact
-            </a>
-          </nav>
-          <div className="flex items-center gap-2">
-            <Magnetic>
-              <button
-                onClick={toggleTheme}
-                className={
-                  isDark
-                    ? "inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm ring-1 ring-white/15 hover:bg-white/15"
-                    : "inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50"
-                }
-              >
-                {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                <span>{isDark ? "Day" : "Night"}</span>
-              </button>
-            </Magnetic>
-            <a
-              href={CONFIG.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              className={
-                isDark
-                  ? "group inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm ring-1 ring-white/15 hover:bg-white/15"
-                  : "group inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50"
-              }
-            >
-              <Linkedin className="h-4 w-4" />
-              <span>Connect</span>
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </a>
-          </div>
+<header
+  className={
+    "fixed inset-x-0 top-0 z-50 " +
+    (isDark
+      ? "border-b border-white/10 bg-slate-950/70 backdrop-blur"
+      : "border-b border-slate-200 bg-white/70 backdrop-blur")
+  }
+>
+  <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-6 py-4 sm:px-8">
+    <a href="#top" className="flex items-center gap-3">
+      <div className="relative">
+        <div
+          className={
+            isDark
+              ? "absolute -inset-1 rounded-xl bg-gradient-to-r from-fuchsia-500 via-cyan-400 to-emerald-400 opacity-50 blur"
+              : "absolute -inset-1 rounded-xl bg-gradient-to-r from-fuchsia-400 via-cyan-400 to-emerald-400 opacity-50 blur"
+          }
+        />
+        <div
+          className={
+            isDark
+              ? "relative grid h-9 w-9 place-items-center rounded-xl bg-slate-900 ring-1 ring-white/15"
+              : "relative grid h-9 w-9 place-items-center rounded-xl bg-white ring-1 ring-slate-200"
+          }
+        >
+          <Layout className={isDark ? "h-5 w-5 text-white/90" : "h-5 w-5 text-slate-900"} />
         </div>
-      </header>
+      </div>
+      <span className="font-semibold tracking-tight">Akhil</span>
+    </a>
+
+    <nav className="hidden gap-6 text-sm md:flex">
+      <a
+        href="#work"
+        className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}
+      >
+        Work
+      </a>
+      <a
+        href="#experience"
+        className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}
+      >
+        Experience
+      </a>
+      <a
+        href="#stack"
+        className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}
+      >
+        Stack
+      </a>
+      <a
+        href="#contact"
+        className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}
+      >
+        Contact
+      </a>
+    </nav>
+
+    <div className="flex items-center gap-2">
+      <Magnetic>
+        <button
+          onClick={toggleTheme}
+          className={
+            isDark
+              ? "inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm ring-1 ring-white/15 hover:bg-white/15"
+              : "inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50"
+          }
+        >
+          {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          <span>{isDark ? "Day" : "Night"}</span>
+        </button>
+      </Magnetic>
+      <a
+        href={CONFIG.linkedin}
+        target="_blank"
+        rel="noreferrer"
+        className={
+          isDark
+            ? "group inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm ring-1 ring-white/15 hover:bg-white/15"
+            : "group inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50"
+        }
+      >
+        <Linkedin className="h-4 w-4" />
+        <span>Connect</span>
+        <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+      </a>
+    </div>
+  </div>
+</header>
+
+{/* spacer to offset fixed header height */}
+<div aria-hidden className="h-[72px]" />
+      
 
       {/* HERO */}
       <section className="relative w-full">
