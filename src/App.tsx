@@ -240,10 +240,8 @@ const ParallaxLayer = ({ speed = 0.05, className = "", children }: ParallaxProps
   );
 };
 
-// Replace your existing Mascot component with this:
-
+/** ============ Mascot ============ */
 type MascotProps = { isDark: boolean; triggerKey: number };
-
 const Mascot = ({ isDark, triggerKey }: MascotProps) => {
   return (
     <AnimatePresence mode="wait">
@@ -253,26 +251,23 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 12 }}
-        transition={{ duration: 0.25, ease: "easeOut" }} // faster fade
+        transition={{ duration: 0.25, ease: "easeOut" }}
       >
         <div className="relative h-32 w-56">
-          {/* Pedestal */}
           <motion.div
             className="absolute left-1/2 top-10 -translate-x-1/2 h-2 w-28 rounded-full"
             style={{ background: isDark ? "rgba(255,255,255,.10)" : "rgba(2,6,23,.08)" }}
             initial={{ scaleX: 0.7, opacity: 0 }}
             animate={{ scaleX: 1, opacity: 1 }}
-            transition={{ duration: 0.25 }} // snappier
+            transition={{ duration: 0.25 }}
           />
-
-          {/* Sun / Moon being placed */}
           <motion.div
             key={isDark ? "moon" : "sun"}
             className="absolute left-1/2 -translate-x-1/2"
             initial={{ y: -24, opacity: 0, scale: 0.9 }}
             animate={{ y: 8, opacity: 1, scale: 1 }}
             exit={{ y: -18, opacity: 0, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 320, damping: 14, duration: 0.35 }} // faster spring
+            transition={{ type: "spring", stiffness: 320, damping: 14, duration: 0.35 }}
           >
             {isDark ? (
               <Moon className="h-8 w-8 text-slate-200 drop-shadow" />
@@ -280,19 +275,16 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
               <Sun className="h-8 w-8 text-amber-400 drop-shadow" />
             )}
           </motion.div>
-
-          {/* Courier */}
           <motion.svg
             viewBox="0 0 120 60"
             className="absolute bottom-2 right-2 h-12 w-24"
             initial={{ x: 20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 20, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }} // quicker entry
+            transition={{ duration: 0.3, ease: "easeOut" }}
             aria-hidden
           >
             {isDark ? (
-              // Owl
               <>
                 <ellipse cx="50" cy="30" rx="18" ry="20" fill="#94a3b8" />
                 <ellipse cx="43" cy="27" rx="5" ry="6" fill="#cbd5e1" />
@@ -312,7 +304,6 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
                 />
               </>
             ) : (
-              // Bird
               <>
                 <ellipse cx="50" cy="32" rx="16" ry="12" fill="#60a5fa" />
                 <circle cx="58" cy="26" r="7" fill="#93c5fd" />
@@ -337,65 +328,8 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
   );
 };
 
-
-
-
-type CaseStudyModalProps = { open: boolean; onClose: () => void; project: Project };
-const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-50" aria-modal>
-      <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
-      <div className="absolute inset-0 overflow-auto">
-        <div className="mx-auto max-w-5xl p-4 sm:p-8">
-          <Glass className="overflow-hidden" dark>
-            <div className="relative h-64 sm:h-96">
-              <img src={project.image} alt={project.name} className="absolute inset-0 h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              <button
-                onClick={onClose}
-                className="absolute right-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm ring-1 ring-white/15 hover:bg-white/20"
-              >
-                <X className="h-4 w-4" /> Close
-              </button>
-              <div className="absolute bottom-4 left-4">
-                <div className="text-xs uppercase tracking-wider text-white/70">{project.tag}</div>
-                <h3 className="text-2xl font-semibold text-white">{project.name}</h3>
-              </div>
-            </div>
-            <div className="grid gap-6 p-6 sm:grid-cols-3">
-              <div className="sm:col-span-2 text-white/90 leading-relaxed">
-                {project.body}
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {project.stack.map((s, i) => (
-                    <span key={i} className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] ring-1 ring-white/15">
-                      {s}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <div className="mb-2 text-sm text-white/70">Key Metrics</div>
-                <div className="grid grid-cols-3 gap-2">
-                  {project.metrics.map((m, i) => (
-                    <div key={i} className="rounded-lg bg-white/10 p-3 text-center ring-1 ring-white/10">
-                      <div className="text-lg font-bold text-emerald-300">{m.v}</div>
-                      <div className="text-[11px] text-white/70">{m.k}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Glass>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 /** ========================= PAGE ========================= */
 export default function App() {
-  // theme
   const [theme, setTheme] = React.useState<"light" | "dark">(() => {
     const stored = typeof window !== "undefined" ? localStorage.getItem("theme") : null;
     if (stored === "light" || stored === "dark") return stored;
@@ -416,7 +350,6 @@ export default function App() {
     setTimeout(() => setIsFading(false), 450);
   };
 
-  // exp carousel
   const [expIndex, setExpIndex] = React.useState(0);
   const [expDir, setExpDir] = React.useState(1 as 1 | -1);
   const nextExp = () => {
@@ -427,154 +360,94 @@ export default function App() {
     setExpDir(-1);
     setExpIndex((i) => (i - 1 + CONFIG.experience.length) % CONFIG.experience.length);
   };
-
-  // case study modal
   const [openId, setOpenId] = React.useState<string | null>(null);
   const activeProject = CONFIG.projects.find((p) => p.id === openId) || null;
 
-  // Experience card variants
   const expVariants = {
     initial: (dir: 1 | -1) => ({ x: dir * 24, opacity: 0, scale: 0.98 }),
     animate: { x: 0, opacity: 1, scale: 1, transition: { duration: 0.35, ease: "easeOut" } },
     exit: (dir: 1 | -1) => ({ x: -dir * 24, opacity: 0, scale: 0.98, transition: { duration: 0.25, ease: "easeIn" } }),
   };
 
-return (
-  <div
-    className={
-      (isDark
-        ? "min-h-screen bg-slate-950 text-white"
-        : "min-h-screen bg-gradient-to-b from-indigo-50 via-white to-white text-slate-900") +
-      " pt-[96px]" // 👈 makes space for the fixed header
-    }
-  >
-    {/* NAV */}
-    <header
+  return (
+    <div
       className={
-        "fixed inset-x-0 top-0 z-50 " +
         (isDark
-          ? "border-b border-white/10 bg-slate-950/70 backdrop-blur"
-          : "border-b border-slate-200 bg-white/70 backdrop-blur")
+          ? "min-h-screen bg-slate-950 text-white"
+          : "min-h-screen bg-gradient-to-b from-indigo-50 via-white to-white text-slate-900") +
+        " pt-[96px]"
       }
     >
-      <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-6 py-6 sm:px-8">
-        {/* Left side: Logo */}
-        <a href="#top" className="flex items-center gap-3">
-          <div className="relative">
-            <div
-              className={
-                isDark
-                  ? "absolute -inset-1 rounded-xl bg-gradient-to-r from-fuchsia-500 via-cyan-400 to-emerald-400 opacity-50 blur"
-                  : "absolute -inset-1 rounded-xl bg-gradient-to-r from-fuchsia-400 via-cyan-400 to-emerald-400 opacity-50 blur"
-              }
-            />
-            <div
-              className={
-                isDark
-                  ? "relative grid h-9 w-9 place-items-center rounded-xl bg-slate-900 ring-1 ring-white/15"
-                  : "relative grid h-9 w-9 place-items-center rounded-xl bg-white ring-1 ring-slate-200"
-              }
-            >
-              <Layout
+      {/* NAV */}
+      <header
+        className={
+          "fixed inset-x-0 top-0 z-50 " +
+          (isDark
+            ? "border-b border-white/10 bg-slate-950/70 backdrop-blur"
+            : "border-b border-slate-200 bg-white/70 backdrop-blur")
+        }
+      >
+        <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-6 py-6 sm:px-8">
+          <a href="#top" className="flex items-center gap-3">
+            <div className="relative">
+              <div
                 className={
-                  isDark ? "h-5 w-5 text-white/90" : "h-5 w-5 text-slate-900"
+                  isDark
+                    ? "absolute -inset-1 rounded-xl bg-gradient-to-r from-fuchsia-500 via-cyan-400 to-emerald-400 opacity-50 blur"
+                    : "absolute -inset-1 rounded-xl bg-gradient-to-r from-fuchsia-400 via-cyan-400 to-emerald-400 opacity-50 blur"
                 }
               />
+              <div
+                className={
+                  isDark
+                    ? "relative grid h-9 w-9 place-items-center rounded-xl bg-slate-900 ring-1 ring-white/15"
+                    : "relative grid h-9 w-9 place-items-center rounded-xl bg-white ring-1 ring-slate-200"
+                }
+              >
+                <Layout className={isDark ? "h-5 w-5 text-white/90" : "h-5 w-5 text-slate-900"} />
+              </div>
             </div>
-          </div>
-          <span className="font-semibold tracking-tight">Akhil</span>
-        </a>
+            <span className="font-semibold tracking-tight">Akhil</span>
+          </a>
 
-        {/* Center: Navigation */}
-        <nav className="hidden gap-6 text-sm md:flex">
-          <a
-            href="#work"
-            className={
-              isDark
-                ? "text-white/80 hover:text-white"
-                : "text-slate-600 hover:text-slate-900"
-            }
-          >
-            Work
-          </a>
-          <a
-            href="#experience"
-            className={
-              isDark
-                ? "text-white/80 hover:text-white"
-                : "text-slate-600 hover:text-slate-900"
-            }
-          >
-            Experience
-          </a>
-          <a
-            href="#stack"
-            className={
-              isDark
-                ? "text-white/80 hover:text-white"
-                : "text-slate-600 hover:text-slate-900"
-            }
-          >
-            Stack
-          </a>
-          <a
-            href="#contact"
-            className={
-              isDark
-                ? "text-white/80 hover:text-white"
-                : "text-slate-600 hover:text-slate-900"
-            }
-          >
-            Contact
-          </a>
-        </nav>
+          <nav className="hidden gap-6 text-sm md:flex">
+            <a href="#work" className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}>Work</a>
+            <a href="#experience" className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}>Experience</a>
+            <a href="#stack" className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}>Stack</a>
+            <a href="#contact" className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}>Contact</a>
+          </nav>
 
-        {/* Right side: Theme toggle + Connect button */}
-        <div className="flex items-center gap-2">
-          <Magnetic>
-            <button
-              onClick={toggleTheme}
+          <div className="flex items-center gap-2">
+            <Magnetic>
+              <button
+                onClick={toggleTheme}
+                className={
+                  isDark
+                    ? "inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm ring-1 ring-white/15 hover:bg-white/15"
+                    : "inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50"
+                }
+              >
+                {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                <span>{isDark ? "Day" : "Night"}</span>
+              </button>
+            </Magnetic>
+            <a
+              href={CONFIG.linkedin}
+              target="_blank"
+              rel="noreferrer"
               className={
                 isDark
-                  ? "inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm ring-1 ring-white/15 hover:bg-white/15"
-                  : "inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50"
+                  ? "group inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm ring-1 ring-white/15 hover:bg-white/15"
+                  : "group inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50"
               }
             >
-              {isDark ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )}
-              <span>{isDark ? "Day" : "Night"}</span>
-            </button>
-          </Magnetic>
-          <a
-            href={CONFIG.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className={
-              isDark
-                ? "group inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm ring-1 ring-white/15 hover:bg-white/15"
-                : "group inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50"
-            }
-          >
-            <Linkedin className="h-4 w-4" />
-            <span>Connect</span>
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </a>
+              <Linkedin className="h-4 w-4" />
+              <span>Connect</span>
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+          </div>
         </div>
-      </div>
-    </header>
-
-    {/* rest of your page sections stay here */}
-  </div>
-);
-
-
-
-{/* spacer to offset fixed header height */}
-<div aria-hidden className="h-[72px]" />
-      
+      </header>
 
       {/* HERO */}
       <section className="relative w-full">
@@ -904,7 +777,6 @@ return (
       <section id="contact" className="relative w-full">
         <div className="mx-auto w-full max-w-[1600px] px-6 pb-24 sm:px-8">
           <Glass className="relative overflow-hidden p-6 md:p-10" dark={isDark}>
-            {/* morphing blob */}
             <svg className="absolute -right-24 -top-24 h-80 w-80 opacity-30" viewBox="0 0 600 600" aria-hidden>
               <g fill={isDark ? "#10b981" : "#22d3ee"}>
                 <path>
@@ -1030,10 +902,13 @@ return (
         .pill { border-radius: 9999px; background: #0f172a; color: #fff; box-shadow: 0 6px 18px rgba(2,6,23,0.15); position: relative; overflow: hidden; }
         .dark .pill { background: rgba(255,255,255,.10); color: #fff; box-shadow: 0 6px 18px rgba(255,255,255,0.06); }
         .pill:after { content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.28) 35%, transparent 70%); transform: translateX(-120%); animation: sheen 6s ease-in-out infinite; }
-        @keyframes sheen { 0% { transform: translateX(-120%); } 40% { transform: translateX(120%); } 100% { transform: translateX(120%); } 
+        @keyframes sheen { 
+          0% { transform: translateX(-120%); } 
+          40% { transform: translateX(120%); } 
+          100% { transform: translateX(120%); } 
+        }
       `}</style>
 
-      {/* modal */}
       {activeProject && <CaseStudyModal open={!!activeProject} onClose={() => setOpenId(null)} project={activeProject} />}
     </div>
   );
