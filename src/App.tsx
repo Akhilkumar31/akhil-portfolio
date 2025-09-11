@@ -442,17 +442,17 @@ export default function App() {
   return (
     <div className={isDark ? "min-h-screen bg-slate-950 text-white" : "min-h-screen bg-gradient-to-b from-indigo-50 via-white to-white text-slate-900"}>
       {/* NAV */}
+{/* === STICKY HEADER (no overlap, follows layout width) === */}
 <header
   className={
-    "fixed inset-x-0 top-0 z-50 " +
-    "sticky top-0 z-40 " +
+    "sticky top-0 z-50 " +
     (isDark
       ? "border-b border-white/10 bg-slate-950/70 backdrop-blur"
       : "border-b border-slate-200 bg-white/70 backdrop-blur")
   }
 >
-  <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-6 py-4 sm:px-8">
   <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-6 py-6 sm:px-8">
+    {/* Left: logo */}
     <a href="#top" className="flex items-center gap-3">
       <div className="relative">
         <div
@@ -469,39 +469,59 @@ export default function App() {
               : "relative grid h-9 w-9 place-items-center rounded-xl bg-white ring-1 ring-slate-200"
           }
         >
-          <Layout className={isDark ? "h-5 w-5 text-white/90" : "h-5 w-5 text-slate-900"} />
+          <Layout
+            className={isDark ? "h-5 w-5 text-white/90" : "h-5 w-5 text-slate-900"}
+          />
         </div>
       </div>
       <span className="font-semibold tracking-tight">Akhil</span>
     </a>
 
+    {/* Center: nav */}
     <nav className="hidden gap-6 text-sm md:flex">
       <a
         href="#work"
-        className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}
+        className={
+          isDark
+            ? "text-white/80 hover:text-white"
+            : "text-slate-600 hover:text-slate-900"
+        }
       >
         Work
       </a>
       <a
         href="#experience"
-        className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}
+        className={
+          isDark
+            ? "text-white/80 hover:text-white"
+            : "text-slate-600 hover:text-slate-900"
+        }
       >
         Experience
       </a>
       <a
         href="#stack"
-        className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}
+        className={
+          isDark
+            ? "text-white/80 hover:text-white"
+            : "text-slate-600 hover:text-slate-900"
+        }
       >
         Stack
       </a>
       <a
         href="#contact"
-        className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}
+        className={
+          isDark
+            ? "text-white/80 hover:text-white"
+            : "text-slate-600 hover:text-slate-900"
+        }
       >
         Contact
       </a>
     </nav>
 
+    {/* Right: actions */}
     <div className="flex items-center gap-2">
       <Magnetic>
         <button
@@ -533,6 +553,7 @@ export default function App() {
     </div>
   </div>
 </header>
+
 
 
 {/* spacer to offset fixed header height */}
