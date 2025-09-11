@@ -243,82 +243,106 @@ const ParallaxLayer = ({ speed = 0.05, className = "", children }: ParallaxProps
 // Replace your existing Mascot component with this:
 
 type MascotProps = { isDark: boolean; triggerKey: number };
-const Mascot = ({ isDark, triggerKey }: MascotProps) => {
-  const animal = isDark ? "🦉" : "🐦"; // night owl / morning bird
 
+const Mascot = ({ isDark, triggerKey }: MascotProps) => {
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        key={triggerKey + (isDark ? "dark" : "light")}
-        className="pointer-events-none absolute right-6 top-6 sm:right-10 sm:top-10 z-20"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.25 }}
+        key={`${triggerKey}-${isDark ? "dark" : "light"}`}
+        className="pointer-events-none absolute right-6 top-6 sm:right-10 sm:top-10 z-30"
+        initial={{ opacity: 0, y: -18 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 18 }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
       >
-        {/* Scene box */}
-        <div className="relative h-28 w-48">
-          {/* Pedestal / stand */}
+        <div className="relative h-32 w-56">
+          {/* Pedestal */}
           <motion.div
-            className="absolute left-1/2 top-8 -translate-x-1/2 rounded-2xl px-4 py-2 text-[10px] font-semibold"
-            style={{
-              background: isDark ? "rgba(255,255,255,0.06)" : "rgba(15,23,42,0.06)",
-              boxShadow: isDark
-                ? "0 10px 30px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.10)"
-                : "0 10px 30px rgba(2,6,23,.12), inset 0 0 0 1px rgba(15,23,42,.08)",
-            }}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.15, duration: 0.35 }}
-          >
-            <span className={isDark ? "text-white/70" : "text-slate-600"}>
-              {isDark ? "Night delivery" : "Morning delivery"}
-            </span>
-          </motion.div>
+            className="absolute left-1/2 top-10 -translate-x-1/2 h-2 w-28 rounded-full"
+            style={{ background: isDark ? "rgba(255,255,255,.10)" : "rgba(2,6,23,.08)" }}
+            initial={{ scaleX: 0.7, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 0.35, delay: 0.1 }}
+          />
 
-          {/* Celestial item being placed */}
+          {/* Sun / Moon being placed */}
           <motion.div
             key={isDark ? "moon" : "sun"}
-            className="absolute left-1/2 top-[-10px] -translate-x-1/2"
-            initial={{ y: -30, scale: 0.8, opacity: 0 }}
-            animate={{ y: 18, scale: 1, opacity: 1 }}
-            exit={{ y: -20, scale: 0.8, opacity: 0 }}
-            transition={{ delay: 0.45, type: "spring", stiffness: 280, damping: 14 }}
+            className="absolute left-1/2 -translate-x-1/2"
+            initial={{ y: -28, opacity: 0, scale: 0.9 }}
+            animate={{ y: 8, opacity: 1, scale: 1 }}
+            exit={{ y: -22, opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 260, damping: 16, delay: 0.25 }}
           >
-            <div className="grid place-items-center rounded-full p-2">
-              {isDark ? (
-                <Moon className="h-7 w-7 text-slate-200 drop-shadow" />
-              ) : (
-                <Sun className="h-7 w-7 drop-shadow" />
-              )}
-            </div>
-            {/* glow */}
-            <motion.div
-              className="mx-auto mt-1 h-1.5 w-10 rounded-full"
-              style={{ background: isDark ? "rgba(148,163,184,.25)" : "rgba(234,179,8,.35)" }}
-              initial={{ scaleX: 0.6, opacity: 0 }}
-              animate={{ scaleX: 1, opacity: 1 }}
-              transition={{ delay: 0.55, duration: 0.4 }}
-            />
+            {isDark ? (
+              <Moon className="h-8 w-8 text-slate-200 drop-shadow" />
+            ) : (
+              <Sun className="h-8 w-8 text-amber-400 drop-shadow" />
+            )}
           </motion.div>
 
-          {/* Animal courier enters, sets it down, then idles */}
-          <motion.div
-            className="absolute bottom-2 left-2 text-2xl"
-            initial={{ x: -24, y: 6, rotate: -8, opacity: 0 }}
-            animate={{ x: 28, y: 6, rotate: 0, opacity: 1 }}
+          {/* Courier: Owl (dark) / Bird (light) */}
+          <motion.svg
+            viewBox="0 0 120 60"
+            className="absolute bottom-2 right-2 h-12 w-24"
+            initial={{ x: 28, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 28, opacity: 0 }}
             transition={{ duration: 0.45, ease: "easeOut" }}
+            aria-hidden
           >
-            <motion.span
-              animate={{ y: [0, -3, 0, 2, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              aria-hidden
-            >
-              {animal}
-            </motion.span>
-          </motion.div>
+            {isDark ? (
+              /* Night Owl */
+              <>
+                {/* body */}
+                <ellipse cx="50" cy="30" rx="18" ry="20" fill="#94a3b8" />
+                {/* face ovals */}
+                <ellipse cx="43" cy="27" rx="5" ry="6" fill="#cbd5e1" />
+                <ellipse cx="57" cy="27" rx="5" ry="6" fill="#cbd5e1" />
+                {/* eyes */}
+                <circle cx="43" cy="28" r="2" fill="#0f172a" />
+                <circle cx="57" cy="28" r="2" fill="#0f172a" />
+                {/* beak */}
+                <polygon points="50,32 46,36 54,36" fill="#f59e0b" />
+                {/* wing */}
+                <motion.ellipse
+                  cx="64"
+                  cy="34"
+                  rx="10"
+                  ry="12"
+                  fill="#64748b"
+                  animate={{ rotate: [0, 6, -3, 0] }}
+                  transform-origin="64px 34px"
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </>
+            ) : (
+              /* Morning Bird */
+              <>
+                {/* body */}
+                <ellipse cx="50" cy="32" rx="16" ry="12" fill="#60a5fa" />
+                {/* head */}
+                <circle cx="58" cy="26" r="7" fill="#93c5fd" />
+                {/* eye */}
+                <circle cx="60" cy="24" r="2" fill="#0c4a6e" />
+                {/* beak */}
+                <polygon points="66,26 74,22 66,18" fill="#f59e0b" />
+                {/* wing */}
+                <motion.ellipse
+                  cx="40"
+                  cy="30"
+                  rx="10"
+                  ry="8"
+                  fill="#3b82f6"
+                  animate={{ rotate: [0, -8, 4, 0] }}
+                  transform-origin="40px 30px"
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </>
+            )}
+          </motion.svg>
 
-          {/* Idle bob for the whole scene */}
+          {/* Gentle idle for the whole scene */}
           <motion.div
             className="absolute inset-0"
             animate={{ y: [0, -2, 0, 1, 0] }}
@@ -329,6 +353,7 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
     </AnimatePresence>
   );
 };
+
 
 
 
