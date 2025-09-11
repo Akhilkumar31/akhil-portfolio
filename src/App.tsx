@@ -1,28 +1,9 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowUpRight,
-  Github,
-  Linkedin,
-  Mail,
-  Phone,
-  MapPin,
-  Code2,
-  Database,
-  Boxes,
-  Server,
-  Rocket,
-  Terminal,
-  ShieldCheck,
-  Cloud,
-  Cpu,
-  Globe,
-  Layout,
-  ChevronLeft,
-  ChevronRight,
-  Sun,
-  Moon,
-  X,
+  ArrowUpRight, Github, Linkedin, Mail, Phone, MapPin, Code2, Database, Boxes,
+  Server, Rocket, Terminal, ShieldCheck, Cloud, Cpu, Globe, Layout,
+  ChevronLeft, ChevronRight, Sun, Moon, X,
 } from "lucide-react";
 
 /** ========================= CONFIG ========================= */
@@ -50,8 +31,7 @@ const CONFIG = {
       tag: "Case Study",
       name: "Hotel Reservation System",
       stack: ["PHP", "MySQL", "Bootstrap", "MVC"],
-      blurb:
-        "Full-stack booking platform with dynamic pricing, secure auth, and concurrency-safe workflows.",
+      blurb: "Full-stack booking platform with dynamic pricing, secure auth, and concurrency-safe workflows.",
       cta: { label: "View Demo", href: "#" },
       image:
         "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1400&auto=format&fit=crop",
@@ -68,8 +48,7 @@ const CONFIG = {
       tag: "UX Build",
       name: "Tindog Website",
       stack: ["HTML", "CSS", "Bootstrap"],
-      blurb:
-        "Mobile-first SPA for pet owners; sleek, animated UI with semantic markup and fast loads.",
+      blurb: "Mobile-first SPA for pet owners; sleek, animated UI with semantic markup and fast loads.",
       cta: { label: "Open Site", href: "#" },
       image:
         "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1400&auto=format&fit=crop",
@@ -118,11 +97,9 @@ const CONFIG = {
       time: "Sep 2022 – Sep 2023",
       points: [
         "Designed and implemented C++ and Python utilities to automate diagnostics and performance tuning, helping reduce manual troubleshooting effort by ~10%.",
-        "Contributed to feature development and debugging in the Informatica MDM Suite (Hub, IDD, ActiveVOS, Business Entity Services, Hierarchy Manager), used by enterprise clients.",
+        "Contributed to feature development and debugging in the Informatica MDM Suite, used by enterprise clients.",
         "Improved match & merge rules and survivorship logic, enhancing data quality and slightly reducing duplicate records in test environments.",
-        "Applied concurrency concepts and OS-level knowledge (Linux/Windows) to optimize system stability and performance during customer deployments.",
-        "Collaborated with cross-functional teams to test, review, and ship enhancements, gaining experience with CI/CD workflows.",
-        "Created technical documentation and internal tools, which made issue resolution and knowledge sharing faster for the team.",
+        "Applied concurrency and OS-level knowledge to optimize system stability and performance during customer deployments.",
       ],
     },
   ],
@@ -141,16 +118,16 @@ const CONFIG = {
 } as const;
 
 const ABOUT = {
-  p1: `As a passionate Software Engineer specializing in Java and full-stack development, I thrive on building robust, scalable solutions for modern enterprises. With hands-on experience at industry leaders like Informatica, where I supported global clients and engineered critical enterprise MDM solutions, I’ve developed deep expertise in cloud computing, automation, and system optimization.`,
-  p2: `Currently, I’m pursuing my M.S. in Computer Science at Rowan University (GPA 3.9), sharpening my technical acumen while interning as a Java Developer at Xact IT Solutions. There, I’ve contributed to the design and optimization of cloud-based applications, leveraging AWS, REST APIs, and MVC architecture.`,
-  p3: `My technical toolkit includes Java, C++, React, Node.js, Python, PHP, MySQL, and AWS Cloud, complemented by certifications from both AWS and Oracle. I’m driven by a desire to solve complex challenges and deliver high-quality, reliable software that empowers organizations to scale.`,
-  p4: `Let’s connect if you’re interested in discussing cloud-native development, enterprise architecture, or opportunities to collaborate on innovative software solutions!`,
+  p1: `As a passionate Software Engineer specializing in Java and full-stack development, I thrive on building robust, scalable solutions for modern enterprises.`,
+  p2: `Currently, I’m pursuing my M.S. in Computer Science at Rowan University (GPA 3.9) while interning as a Java Developer at Xact IT Solutions.`,
+  p3: `My toolkit: Java, C++, React, Node.js, Python, PHP, MySQL, and AWS Cloud.`,
+  p4: `Let’s connect if you’re interested in cloud-native development, enterprise architecture, or collaboration!`,
 };
 
-/** ============ Types derived from CONFIG ============ */
+/** ============ Types ============ */
 type Project = (typeof CONFIG)["projects"][number];
 
-/** ========================= UTIL & PRIMITIVES ========================= */
+/** ========================= UTIL ========================= */
 const fade = {
   initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -200,10 +177,7 @@ const Magnetic = ({ className = "", children }: MagneticProps) => {
       }}
       onMouseLeave={() => setT({ x: 0, y: 0 })}
       className={className}
-      style={{
-        transform: `translate3d(${t.x}px, ${t.y}px, 0)`,
-        transition: "transform 120ms ease-out",
-      }}
+      style={{ transform: `translate3d(${t.x}px, ${t.y}px, 0)`, transition: "transform 120ms ease-out" }}
     >
       {children}
     </div>
@@ -233,100 +207,82 @@ const ParallaxLayer = ({ speed = 0.05, className = "", children }: ParallaxProps
       window.removeEventListener("scroll", onScroll);
     };
   }, [speed]);
-  return (
-    <div ref={ref} className={className}>
-      {children}
-    </div>
-  );
+  return <div ref={ref} className={className}>{children}</div>;
 };
 
 /** ============ Mascot ============ */
 type MascotProps = { isDark: boolean; triggerKey: number };
-const Mascot = ({ isDark, triggerKey }: MascotProps) => {
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={`${triggerKey}-${isDark ? "dark" : "light"}`}
-        className="pointer-events-none absolute right-6 top-6 sm:right-10 sm:top-10 z-30"
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 12 }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
-      >
-        <div className="relative h-32 w-56">
-          <motion.div
-            className="absolute left-1/2 top-10 -translate-x-1/2 h-2 w-28 rounded-full"
-            style={{ background: isDark ? "rgba(255,255,255,.10)" : "rgba(2,6,23,.08)" }}
-            initial={{ scaleX: 0.7, opacity: 0 }}
-            animate={{ scaleX: 1, opacity: 1 }}
-            transition={{ duration: 0.25 }}
-          />
-          <motion.div
-            key={isDark ? "moon" : "sun"}
-            className="absolute left-1/2 -translate-x-1/2"
-            initial={{ y: -24, opacity: 0, scale: 0.9 }}
-            animate={{ y: 8, opacity: 1, scale: 1 }}
-            exit={{ y: -18, opacity: 0, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 320, damping: 14, duration: 0.35 }}
-          >
-            {isDark ? (
-              <Moon className="h-8 w-8 text-slate-200 drop-shadow" />
-            ) : (
-              <Sun className="h-8 w-8 text-amber-400 drop-shadow" />
-            )}
-          </motion.div>
-          <motion.svg
-            viewBox="0 0 120 60"
-            className="absolute bottom-2 right-2 h-12 w-24"
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 20, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            aria-hidden
-          >
-            {isDark ? (
-              <>
-                <ellipse cx="50" cy="30" rx="18" ry="20" fill="#94a3b8" />
-                <ellipse cx="43" cy="27" rx="5" ry="6" fill="#cbd5e1" />
-                <ellipse cx="57" cy="27" rx="5" ry="6" fill="#cbd5e1" />
-                <circle cx="43" cy="28" r="2" fill="#0f172a" />
-                <circle cx="57" cy="28" r="2" fill="#0f172a" />
-                <polygon points="50,32 46,36 54,36" fill="#f59e0b" />
-                <motion.ellipse
-                  cx="64"
-                  cy="34"
-                  rx="10"
-                  ry="12"
-                  fill="#64748b"
-                  animate={{ rotate: [0, 6, -3, 0] }}
-                  transformOrigin="64px 34px"
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                />
-              </>
-            ) : (
-              <>
-                <ellipse cx="50" cy="32" rx="16" ry="12" fill="#60a5fa" />
-                <circle cx="58" cy="26" r="7" fill="#93c5fd" />
-                <circle cx="60" cy="24" r="2" fill="#0c4a6e" />
-                <polygon points="66,26 74,22 66,18" fill="#f59e0b" />
-                <motion.ellipse
-                  cx="40"
-                  cy="30"
-                  rx="10"
-                  ry="8"
-                  fill="#3b82f6"
-                  animate={{ rotate: [0, -8, 4, 0] }}
-                  transformOrigin="40px 30px"
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                />
-              </>
-            )}
-          </motion.svg>
-        </div>
-      </motion.div>
-    </AnimatePresence>
-  );
-};
+const Mascot = ({ isDark, triggerKey }: MascotProps) => (
+  <AnimatePresence mode="wait">
+    <motion.div
+      key={`${triggerKey}-${isDark ? "dark" : "light"}`}
+      className="pointer-events-none absolute right-6 top-6 sm:right-10 sm:top-10 z-30"
+      initial={{ opacity: 0, y: -12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 12 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+    >
+      <div className="relative h-32 w-56">
+        <motion.div
+          className="absolute left-1/2 top-10 -translate-x-1/2 h-2 w-28 rounded-full"
+          style={{ background: isDark ? "rgba(255,255,255,.10)" : "rgba(2,6,23,.08)" }}
+          initial={{ scaleX: 0.7, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: 1 }}
+          transition={{ duration: 0.25 }}
+        />
+        <motion.div
+          key={isDark ? "moon" : "sun"}
+          className="absolute left-1/2 -translate-x-1/2"
+          initial={{ y: -24, opacity: 0, scale: 0.9 }}
+          animate={{ y: 8, opacity: 1, scale: 1 }}
+          exit={{ y: -18, opacity: 0, scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 320, damping: 14, duration: 0.35 }}
+        >
+          {isDark ? <Moon className="h-8 w-8 text-slate-200 drop-shadow" /> : <Sun className="h-8 w-8 text-amber-400 drop-shadow" />}
+        </motion.div>
+        <motion.svg
+          viewBox="0 0 120 60"
+          className="absolute bottom-2 right-2 h-12 w-24"
+          initial={{ x: 20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: 20, opacity: 0 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          aria-hidden
+        >
+          {isDark ? (
+            <>
+              <ellipse cx="50" cy="30" rx="18" ry="20" fill="#94a3b8" />
+              <ellipse cx="43" cy="27" rx="5" ry="6" fill="#cbd5e1" />
+              <ellipse cx="57" cy="27" rx="5" ry="6" fill="#cbd5e1" />
+              <circle cx="43" cy="28" r="2" fill="#0f172a" />
+              <circle cx="57" cy="28" r="2" fill="#0f172a" />
+              <polygon points="50,32 46,36 54,36" fill="#f59e0b" />
+              <motion.ellipse
+                cx="64" cy="34" rx="10" ry="12" fill="#64748b"
+                animate={{ rotate: [0, 6, -3, 0] }}
+                transformOrigin="64px 34px"
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </>
+          ) : (
+            <>
+              <ellipse cx="50" cy="32" rx="16" ry="12" fill="#60a5fa" />
+              <circle cx="58" cy="26" r="7" fill="#93c5fd" />
+              <circle cx="60" cy="24" r="2" fill="#0c4a6e" />
+              <polygon points="66,26 74,22 66,18" fill="#f59e0b" />
+              <motion.ellipse
+                cx="40" cy="30" rx="10" ry="8" fill="#3b82f6"
+                animate={{ rotate: [0, -8, 4, 0] }}
+                transformOrigin="40px 30px"
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </>
+          )}
+        </motion.svg>
+      </div>
+    </motion.div>
+  </AnimatePresence>
+);
 
 /** ============ Modal ============ */
 type CaseStudyModalProps = { open: boolean; onClose: () => void; project: Project };
@@ -384,6 +340,7 @@ const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
 
 /** ========================= PAGE ========================= */
 export default function App() {
+  // theme
   const [theme, setTheme] = React.useState<"light" | "dark">(() => {
     const stored = typeof window !== "undefined" ? localStorage.getItem("theme") : null;
     if (stored === "light" || stored === "dark") return stored;
@@ -404,16 +361,11 @@ export default function App() {
     setTimeout(() => setIsFading(false), 450);
   };
 
+  // experience carousel
   const [expIndex, setExpIndex] = React.useState(0);
   const [expDir, setExpDir] = React.useState(1 as 1 | -1);
-  const nextExp = () => {
-    setExpDir(1);
-    setExpIndex((i) => (i + 1) % CONFIG.experience.length);
-  };
-  const prevExp = () => {
-    setExpDir(-1);
-    setExpIndex((i) => (i - 1 + CONFIG.experience.length) % CONFIG.experience.length);
-  };
+  const nextExp = () => { setExpDir(1); setExpIndex((i) => (i + 1) % CONFIG.experience.length); };
+  const prevExp = () => { setExpDir(-1); setExpIndex((i) => (i - 1 + CONFIG.experience.length) % CONFIG.experience.length); };
   const [openId, setOpenId] = React.useState<string | null>(null);
   const activeProject = CONFIG.projects.find((p) => p.id === openId) || null;
 
@@ -425,17 +377,17 @@ export default function App() {
 
   return (
     <>
-      {/* === FIXED HEADER (full width, always on top) === */}
+      {/* === STICKY HEADER (no overlap, follows layout width) === */}
       <header
         className={
-          "fixed inset-x-0 top-0 z-50 " +
+          "sticky top-0 z-50 " +
           (isDark
             ? "border-b border-white/10 bg-slate-950/70 backdrop-blur"
             : "border-b border-slate-200 bg-white/70 backdrop-blur")
         }
       >
         <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-6 py-6 sm:px-8">
-          {/* Left side: Logo */}
+          {/* Left: logo */}
           <a href="#top" className="flex items-center gap-3">
             <div className="relative">
               <div
@@ -458,7 +410,7 @@ export default function App() {
             <span className="font-semibold tracking-tight">Akhil</span>
           </a>
 
-          {/* Center: Navigation */}
+          {/* Center: nav */}
           <nav className="hidden gap-6 text-sm md:flex">
             <a href="#work" className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}>Work</a>
             <a href="#experience" className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}>Experience</a>
@@ -466,7 +418,7 @@ export default function App() {
             <a href="#contact" className={isDark ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900"}>Contact</a>
           </nav>
 
-          {/* Right side */}
+          {/* Right: actions */}
           <div className="flex items-center gap-2">
             <Magnetic>
               <button
@@ -499,15 +451,8 @@ export default function App() {
         </div>
       </header>
 
-      {/* === PAGE WRAPPER (offset for header height) === */}
-      <div
-        className={
-          (isDark
-            ? "min-h-screen bg-slate-950 text-white"
-            : "min-h-screen bg-gradient-to-b from-indigo-50 via-white to-white text-slate-900") +
-          " pt-[96px]"
-        }
-      >
+      {/* === PAGE WRAPPER (no extra top padding needed) === */}
+      <div className={isDark ? "min-h-screen bg-slate-950 text-white" : "min-h-screen bg-gradient-to-b from-indigo-50 via-white to-white text-slate-900"}>
         {/* HERO */}
         <section className="relative w-full">
           <div className="relative mx-auto w-full max-w-[1600px] px-6 sm:px-8">
@@ -533,9 +478,7 @@ export default function App() {
 
                   <motion.div {...fade} className="mt-6 flex flex-wrap gap-3">
                     {CONFIG.highlights.map((h, i) => (
-                      <Chip key={i} icon={h.icon}>
-                        {h.text}
-                      </Chip>
+                      <Chip key={i} icon={h.icon}>{h.text}</Chip>
                     ))}
                   </motion.div>
                   <motion.div {...fade} className="mt-8 flex flex-wrap gap-3">
@@ -600,7 +543,7 @@ export default function App() {
 
         {/* VISUAL STRIP */}
         <section className="w-full py-20">
-          <div className="mx-auto w-full max-w-[1800px] px-4 sm:px-6">
+          <div className="mx-auto w/full max-w-[1800px] px-4 sm:px-6">
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {[
                 "https://images.unsplash.com/photo-1529336953121-4a5e63ef0f02?q=80&w=1600&auto=format&fit=crop",
@@ -617,13 +560,7 @@ export default function App() {
                   }
                 >
                   <img src={src} alt="showcase" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
-                  <div
-                    className={
-                      isDark
-                        ? "pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"
-                        : "pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent"
-                    }
-                  />
+                  <div className={isDark ? "pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" : "pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent"} />
                 </div>
               ))}
             </div>
@@ -651,10 +588,7 @@ export default function App() {
                 <p className={isDark ? "mt-2 text-white/70" : "mt-2 text-slate-600"}>Java, C++, React, Node.js, Python, PHP, MySQL, AWS Cloud</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {["Java", "C++", "React", "Node.js", "Python", "PHP", "MySQL", "AWS", "REST APIs", "MVC", "Automation", "Cloud-native"].map((t, i) => (
-                    <span
-                      key={i}
-                      className={isDark ? "rounded-full bg-white/10 px-3 py-1 text-sm ring-1 ring-white/15" : "rounded-full bg-slate-100 px-3 py-1 text-sm ring-1 ring-slate-200"}
-                    >
+                    <span key={i} className={isDark ? "rounded-full bg-white/10 px-3 py-1 text-sm ring-1 ring-white/15" : "rounded-full bg-slate-100 px-3 py-1 text-sm ring-1 ring-slate-200"}>
                       {t}
                     </span>
                   ))}
@@ -672,14 +606,10 @@ export default function App() {
               fill={isDark ? "#0f172a" : "#ffffff"}
               d="M0,32L80,48C160,64,320,96,480,80C640,64,800,0,960,0C1120,0,1280,64,1360,96L1440,128L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
             >
-              <animate
-                attributeName="d"
-                dur="8s"
-                repeatCount="indefinite"
+              <animate attributeName="d" dur="8s" repeatCount="indefinite"
                 values="M0,32L80,48C160,64,320,96,480,80C640,64,800,0,960,0C1120,0,1280,64,1360,96L1440,128L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z;
                         M0,20L80,40C160,60,320,90,480,70C640,50,800,10,960,10C1120,10,1280,70,1360,90L1440,110L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z;
-                        M0,32L80,48C160,64,320,96,480,80C640,64,800,0,960,0C1120,0,1280,64,1360,96L1440,128L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
-              />
+                        M0,32L80,48C160,64,320,96,480,80C640,64,800,0,960,0C1120,0,1280,64,1360,96L1440,128L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z" />
             </path>
           </svg>
         </div>
@@ -694,11 +624,8 @@ export default function App() {
               <Magnetic>
                 <a
                   href="#contact"
-                  className={
-                    isDark
-                      ? "hidden items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm ring-1 ring-white/15 hover:bg-white/15 md:inline-flex"
-                      : "hidden items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50 md:inline-flex"
-                  }
+                  className={isDark ? "hidden items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm ring-1 ring-white/15 hover:bg-white/15 md:inline-flex"
+                                   : "hidden items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50 md:inline-flex"}
                 >
                   <Rocket className="h-4 w-4" /> Start a project
                 </a>
@@ -725,9 +652,7 @@ export default function App() {
                         ))}
                       </div>
                       <div className={isDark ? "mt-auto flex items-center justify-between pt-2 text-sm text-emerald-300" : "mt-auto flex items-center justify-between pt-2 text-sm text-emerald-600"}>
-                        <button onClick={() => setOpenId(p.id)} className="underline">
-                          View case study
-                        </button>
+                        <button onClick={() => setOpenId(p.id)} className="underline">View case study</button>
                         <span>{p.cta.label} →</span>
                       </div>
                     </div>
@@ -744,16 +669,10 @@ export default function App() {
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-2xl font-bold tracking-tight md:text-3xl">Experience</h2>
               <div className="flex items-center gap-2">
-                <button
-                  onClick={prevExp}
-                  className={isDark ? "rounded-lg bg-white/10 p-2 ring-1 ring-white/15 hover:bg-white/15" : "rounded-lg bg-slate-100 p-2 ring-1 ring-slate-200 hover:bg-slate-200/50"}
-                >
+                <button onClick={prevExp} className={isDark ? "rounded-lg bg-white/10 p-2 ring-1 ring-white/15 hover:bg-white/15" : "rounded-lg bg-slate-100 p-2 ring-1 ring-slate-200 hover:bg-slate-200/50"}>
                   <ChevronLeft className="h-4 w-4" />
                 </button>
-                <button
-                  onClick={nextExp}
-                  className={isDark ? "rounded-lg bg-white/10 p-2 ring-1 ring-white/15 hover:bg-white/15" : "rounded-lg bg-slate-100 p-2 ring-1 ring-slate-200 hover:bg-slate-200/50"}
-                >
+                <button onClick={nextExp} className={isDark ? "rounded-lg bg-white/10 p-2 ring-1 ring-white/15 hover:bg-white/15" : "rounded-lg bg-slate-100 p-2 ring-1 ring-slate-200 hover:bg-slate-200/50"}>
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </div>
@@ -871,11 +790,8 @@ export default function App() {
                     <Magnetic>
                       <a
                         href={`mailto:${CONFIG.email}`}
-                        className={
-                          isDark
-                            ? "inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950"
-                            : "inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white"
-                        }
+                        className={isDark ? "inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950"
+                                           : "inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white"}
                       >
                         Email me <ArrowUpRight className="h-4 w-4" />
                       </a>
@@ -884,11 +800,8 @@ export default function App() {
                       href={CONFIG.linkedin}
                       target="_blank"
                       rel="noreferrer"
-                      className={
-                        isDark
-                          ? "inline-flex items-center gap-2 rounded-full bg-white/10 px-5 py-2.5 text-sm ring-1 ring-white/15 hover:bg-white/15"
-                          : "inline-flex items-center gap-2 rounded-full bg-slate-100 px-5 py-2.5 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50"
-                      }
+                      className={isDark ? "inline-flex items-center gap-2 rounded-full bg-white/10 px-5 py-2.5 text-sm ring-1 ring-white/15 hover:bg-white/15"
+                                         : "inline-flex items-center gap-2 rounded-full bg-slate-100 px-5 py-2.5 text-sm ring-1 ring-slate-200 hover:bg-slate-200/50"}
                     >
                       <Linkedin className="h-4 w-4" /> LinkedIn
                     </a>
@@ -926,15 +839,9 @@ export default function App() {
               © {new Date().getFullYear()} {CONFIG.name}. All rights reserved.
             </div>
             <div className={isDark ? "flex items-center gap-4 text-sm text-white/70" : "flex items-center gap-4 text-sm text-slate-600"}>
-              <a href={CONFIG.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 hover:opacity-90">
-                <Github className="h-4 w-4" /> GitHub
-              </a>
-              <a href={CONFIG.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 hover:opacity-90">
-                <Linkedin className="h-4 w-4" /> LinkedIn
-              </a>
-              <a href={`mailto:${CONFIG.email}`} className="inline-flex items-center gap-2 hover:opacity-90">
-                <Mail className="h-4 w-4" /> Email
-              </a>
+              <a href={CONFIG.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 hover:opacity-90"><Github className="h-4 w-4" /> GitHub</a>
+              <a href={CONFIG.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 hover:opacity-90"><Linkedin className="h-4 w-4" /> LinkedIn</a>
+              <a href={`mailto:${CONFIG.email}`} className="inline-flex items-center gap-2 hover:opacity-90"><Mail className="h-4 w-4" /> Email</a>
             </div>
           </div>
         </footer>
@@ -958,15 +865,11 @@ export default function App() {
         {/* local styles for chip sheen */}
         <style>{`
           html { scroll-behavior: smooth; }
-          section { scroll-margin-top: 96px; }
+          section { scroll-margin-top: 80px; } /* slightly less since sticky header sits in flow */
           .pill { border-radius: 9999px; background: #0f172a; color: #fff; box-shadow: 0 6px 18px rgba(2,6,23,0.15); position: relative; overflow: hidden; }
           .dark .pill { background: rgba(255,255,255,.10); color: #fff; box-shadow: 0 6px 18px rgba(255,255,255,0.06); }
           .pill:after { content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.28) 35%, transparent 70%); transform: translateX(-120%); animation: sheen 6s ease-in-out infinite; }
-          @keyframes sheen {
-            0% { transform: translateX(-120%); }
-            40% { transform: translateX(120%); }
-            100% { transform: translateX(120%); }
-          }
+          @keyframes sheen { 0% { transform: translateX(-120%); } 40% { transform: translateX(120%); } 100% { transform: translateX(120%); } }
         `}</style>
 
         {/* modal */}
