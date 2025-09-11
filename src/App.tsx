@@ -240,51 +240,96 @@ const ParallaxLayer = ({ speed = 0.05, className = "", children }: ParallaxProps
   );
 };
 
+// Replace your existing Mascot component with this:
+
 type MascotProps = { isDark: boolean; triggerKey: number };
 const Mascot = ({ isDark, triggerKey }: MascotProps) => {
+  const animal = isDark ? "🦉" : "🐦"; // night owl / morning bird
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        key={triggerKey}
-        className="absolute right-6 top-6 sm:right-10 sm:top-10"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        key={triggerKey + (isDark ? "dark" : "light")}
+        className="pointer-events-none absolute right-6 top-6 sm:right-10 sm:top-10 z-20"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
       >
-        <motion.div
-          className="flex items-center gap-2 rounded-full px-4 py-2 shadow-lg"
-          animate={{ y: [0, -6, 0, 4, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          style={{
-            background: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)",
-          }}
-        >
-          {/* Creature (just a cute dot/emoji for now) */}
+        {/* Scene box */}
+        <div className="relative h-28 w-48">
+          {/* Pedestal / stand */}
           <motion.div
-            initial={{ x: -30, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-lg"
+            className="absolute left-1/2 top-8 -translate-x-1/2 rounded-2xl px-4 py-2 text-[10px] font-semibold"
+            style={{
+              background: isDark ? "rgba(255,255,255,0.06)" : "rgba(15,23,42,0.06)",
+              boxShadow: isDark
+                ? "0 10px 30px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.10)"
+                : "0 10px 30px rgba(2,6,23,.12), inset 0 0 0 1px rgba(15,23,42,.08)",
+            }}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.15, duration: 0.35 }}
           >
-            🐾
+            <span className={isDark ? "text-white/70" : "text-slate-600"}>
+              {isDark ? "Night delivery" : "Morning delivery"}
+            </span>
           </motion.div>
 
-          {/* Delivered icon: Sun or Moon */}
+          {/* Celestial item being placed */}
           <motion.div
             key={isDark ? "moon" : "sun"}
-            initial={{ scale: 0.6, opacity: 0, y: -10 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.6, opacity: 0, y: 10 }}
-            transition={{ duration: 0.5 }}
+            className="absolute left-1/2 top-[-10px] -translate-x-1/2"
+            initial={{ y: -30, scale: 0.8, opacity: 0 }}
+            animate={{ y: 18, scale: 1, opacity: 1 }}
+            exit={{ y: -20, scale: 0.8, opacity: 0 }}
+            transition={{ delay: 0.45, type: "spring", stiffness: 280, damping: 14 }}
           >
-            {isDark ? <Moon className="h-6 w-6 text-slate-200" /> : <Sun className="h-6 w-6 text-yellow-400" />}
+            <div className="grid place-items-center rounded-full p-2">
+              {isDark ? (
+                <Moon className="h-7 w-7 text-slate-200 drop-shadow" />
+              ) : (
+                <Sun className="h-7 w-7 drop-shadow" />
+              )}
+            </div>
+            {/* glow */}
+            <motion.div
+              className="mx-auto mt-1 h-1.5 w-10 rounded-full"
+              style={{ background: isDark ? "rgba(148,163,184,.25)" : "rgba(234,179,8,.35)" }}
+              initial={{ scaleX: 0.6, opacity: 0 }}
+              animate={{ scaleX: 1, opacity: 1 }}
+              transition={{ delay: 0.55, duration: 0.4 }}
+            />
           </motion.div>
-        </motion.div>
+
+          {/* Animal courier enters, sets it down, then idles */}
+          <motion.div
+            className="absolute bottom-2 left-2 text-2xl"
+            initial={{ x: -24, y: 6, rotate: -8, opacity: 0 }}
+            animate={{ x: 28, y: 6, rotate: 0, opacity: 1 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
+          >
+            <motion.span
+              animate={{ y: [0, -3, 0, 2, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              aria-hidden
+            >
+              {animal}
+            </motion.span>
+          </motion.div>
+
+          {/* Idle bob for the whole scene */}
+          <motion.div
+            className="absolute inset-0"
+            animate={{ y: [0, -2, 0, 1, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
       </motion.div>
     </AnimatePresence>
   );
 };
+
 
 
 type CaseStudyModalProps = { open: boolean; onClose: () => void; project: Project };
