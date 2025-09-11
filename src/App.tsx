@@ -242,59 +242,50 @@ const ParallaxLayer = ({ speed = 0.05, className = "", children }: ParallaxProps
 
 type MascotProps = { isDark: boolean; triggerKey: number };
 const Mascot = ({ isDark, triggerKey }: MascotProps) => {
-  const base = {
-    initial: { opacity: 0, y: 24, scale: 0.92, rotate: -2 },
-    animate: { opacity: 1, y: 0, scale: 1, rotate: 0, transition: { duration: 0.35, ease: "easeOut" } },
-    exit: { opacity: 0, y: -14, scale: 0.96, rotate: 2, transition: { duration: 0.28, ease: "easeIn" } },
-  };
-
   return (
     <AnimatePresence mode="wait">
       <motion.div
         key={triggerKey}
         className="absolute right-6 top-6 sm:right-10 sm:top-10"
-        initial={base.initial}
-        animate={base.animate}
-        exit={base.exit}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <motion.div
-          animate={{ y: [0, -6, 0, 4, 0], rotate: [0, -1.2, 0.8, -0.6, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="relative"
+          className="flex items-center gap-2 rounded-full px-4 py-2 shadow-lg"
+          animate={{ y: [0, -6, 0, 4, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)",
+          }}
         >
-          <div className="relative grid place-items-center">
-            <div
-              className={
-                (isDark ? "bg-white/10 ring-white/15" : "bg-white ring-slate-200") +
-                " relative h-16 w-16 rounded-2xl ring-1 shadow-lg"
-              }
-            >
-              <div
-                className="absolute -top-3 left-1/2 -translate-x-1/2 h-3 w-10 rounded-full"
-                style={{ background: isDark ? "rgba(59,130,246,0.25)" : "rgba(59,130,246,0.45)" }}
-              />
-              <div className="absolute left-1/2 top-1/2 grid w-10 -translate-x-1/2 -translate-y-1/2 grid-cols-2 gap-2">
-                <div className={(isDark ? "bg-white/90" : "bg-slate-900") + " h-2.5 w-2.5 rounded-full"} />
-                <div className={(isDark ? "bg-white/90" : "bg-slate-900") + " h-2.5 w-2.5 rounded-full"} />
-              </div>
-              <div
-                className={
-                  (isDark ? "bg-emerald-300/80" : "bg-emerald-500/90") +
-                  " absolute bottom-3 left-1/2 h-1.5 w-6 -translate-x-1/2 rounded-full"
-                }
-              />
-            </div>
-            <motion.div
-              className={(isDark ? "bg-black/30" : "bg-slate-400/30") + " mt-2 h-2 w-10 rounded-full blur-[2px]"}
-              animate={{ scaleX: [1, 0.9, 1.05, 1], opacity: [0.35, 0.25, 0.35, 0.35] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </div>
+          {/* Creature (just a cute dot/emoji for now) */}
+          <motion.div
+            initial={{ x: -30, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-lg"
+          >
+            🐾
+          </motion.div>
+
+          {/* Delivered icon: Sun or Moon */}
+          <motion.div
+            key={isDark ? "moon" : "sun"}
+            initial={{ scale: 0.6, opacity: 0, y: -10 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.6, opacity: 0, y: 10 }}
+            transition={{ duration: 0.5 }}
+          >
+            {isDark ? <Moon className="h-6 w-6 text-slate-200" /> : <Sun className="h-6 w-6 text-yellow-400" />}
+          </motion.div>
         </motion.div>
       </motion.div>
     </AnimatePresence>
   );
 };
+
 
 type CaseStudyModalProps = { open: boolean; onClose: () => void; project: Project };
 const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
