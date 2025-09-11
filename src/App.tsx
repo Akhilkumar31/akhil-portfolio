@@ -250,10 +250,10 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
       <motion.div
         key={`${triggerKey}-${isDark ? "dark" : "light"}`}
         className="pointer-events-none absolute right-6 top-6 sm:right-10 sm:top-10 z-30"
-        initial={{ opacity: 0, y: -18 }}
+        initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 18 }}
-        transition={{ duration: 0.35, ease: "easeOut" }}
+        exit={{ opacity: 0, y: 12 }}
+        transition={{ duration: 0.25, ease: "easeOut" }} // faster fade
       >
         <div className="relative h-32 w-56">
           {/* Pedestal */}
@@ -262,17 +262,17 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
             style={{ background: isDark ? "rgba(255,255,255,.10)" : "rgba(2,6,23,.08)" }}
             initial={{ scaleX: 0.7, opacity: 0 }}
             animate={{ scaleX: 1, opacity: 1 }}
-            transition={{ duration: 0.35, delay: 0.1 }}
+            transition={{ duration: 0.25 }} // snappier
           />
 
           {/* Sun / Moon being placed */}
           <motion.div
             key={isDark ? "moon" : "sun"}
             className="absolute left-1/2 -translate-x-1/2"
-            initial={{ y: -28, opacity: 0, scale: 0.9 }}
+            initial={{ y: -24, opacity: 0, scale: 0.9 }}
             animate={{ y: 8, opacity: 1, scale: 1 }}
-            exit={{ y: -22, opacity: 0, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 260, damping: 16, delay: 0.25 }}
+            exit={{ y: -18, opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 320, damping: 14, duration: 0.35 }} // faster spring
           >
             {isDark ? (
               <Moon className="h-8 w-8 text-slate-200 drop-shadow" />
@@ -281,30 +281,25 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
             )}
           </motion.div>
 
-          {/* Courier: Owl (dark) / Bird (light) */}
+          {/* Courier */}
           <motion.svg
             viewBox="0 0 120 60"
             className="absolute bottom-2 right-2 h-12 w-24"
-            initial={{ x: 28, opacity: 0 }}
+            initial={{ x: 20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 28, opacity: 0 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
+            exit={{ x: 20, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }} // quicker entry
             aria-hidden
           >
             {isDark ? (
-              /* Night Owl */
+              // Owl
               <>
-                {/* body */}
                 <ellipse cx="50" cy="30" rx="18" ry="20" fill="#94a3b8" />
-                {/* face ovals */}
                 <ellipse cx="43" cy="27" rx="5" ry="6" fill="#cbd5e1" />
                 <ellipse cx="57" cy="27" rx="5" ry="6" fill="#cbd5e1" />
-                {/* eyes */}
                 <circle cx="43" cy="28" r="2" fill="#0f172a" />
                 <circle cx="57" cy="28" r="2" fill="#0f172a" />
-                {/* beak */}
                 <polygon points="50,32 46,36 54,36" fill="#f59e0b" />
-                {/* wing */}
                 <motion.ellipse
                   cx="64"
                   cy="34"
@@ -313,21 +308,16 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
                   fill="#64748b"
                   animate={{ rotate: [0, 6, -3, 0] }}
                   transform-origin="64px 34px"
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                 />
               </>
             ) : (
-              /* Morning Bird */
+              // Bird
               <>
-                {/* body */}
                 <ellipse cx="50" cy="32" rx="16" ry="12" fill="#60a5fa" />
-                {/* head */}
                 <circle cx="58" cy="26" r="7" fill="#93c5fd" />
-                {/* eye */}
                 <circle cx="60" cy="24" r="2" fill="#0c4a6e" />
-                {/* beak */}
                 <polygon points="66,26 74,22 66,18" fill="#f59e0b" />
-                {/* wing */}
                 <motion.ellipse
                   cx="40"
                   cy="30"
@@ -336,18 +326,11 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
                   fill="#3b82f6"
                   animate={{ rotate: [0, -8, 4, 0] }}
                   transform-origin="40px 30px"
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                 />
               </>
             )}
           </motion.svg>
-
-          {/* Gentle idle for the whole scene */}
-          <motion.div
-            className="absolute inset-0"
-            animate={{ y: [0, -2, 0, 1, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
         </div>
       </motion.div>
     </AnimatePresence>
