@@ -348,7 +348,7 @@ const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
       <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-xl" onClick={onClose}></div>
       <div className="absolute inset-0 overflow-auto">
         <div className="mx-auto max-w-5xl p-4 sm:p-8">
-<Glass className="overflow-hidden" dark>
+<Glass className="overflow-hidden bg-transparent" dark>
   {/* NEW: blur + dim only the area under the modal card */}
   <div className="pointer-events-none absolute inset-0 backdrop-blur-2xl bg-slate-950/40" />
 
