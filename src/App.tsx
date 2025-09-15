@@ -340,26 +340,23 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
 
 
 
-type CaseStudyModalProps = { open: boolean; onClose: () => void; project: Project };
-
 const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[999]" aria-modal>
-      {/* Backdrop: blur + dim the whole page */}
+    <div className="fixed inset-0 z-[999] isolate" aria-modal>
+      {/* Backdrop (slightly higher opacity) */}
       <button
         onClick={onClose}
         aria-label="Close"
-        className="absolute inset-0 bg-slate-950/65 backdrop-blur-md"
+        className="absolute inset-0 bg-slate-950/70 backdrop-blur-md"
       />
 
       {/* Modal scroll area */}
       <div className="absolute inset-0 overflow-auto">
         <div className="mx-auto max-w-5xl p-4 sm:p-8">
-          {/* Card: semi-opaque 'glass' so background text never competes */}
-          <div className="relative overflow-hidden rounded-2xl ring-1 ring-white/15 shadow-[0_10px_30px_-10px_rgba(2,6,23,0.5)] 
-                          bg-slate-900/75 supports-[backdrop-filter]:bg-slate-900/55 supports-[backdrop-filter]:backdrop-blur-2xl">
+          {/* OPAQUE card, no backdrop-blur here */}
+          <div className="relative overflow-hidden rounded-2xl ring-1 ring-white/15 shadow-[0_10px_30px_-10px_rgba(2,6,23,0.5)] bg-slate-900">
             {/* Header with image */}
             <div className="relative h-64 sm:h-96">
               <img
@@ -415,12 +412,12 @@ const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
             </div>
             {/* /Body */}
           </div>
-          {/* /Card */}
         </div>
       </div>
     </div>
   );
 };
+
 /** ========================= PAGE ========================= */
 export default function App() {
   // theme
