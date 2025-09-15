@@ -350,7 +350,7 @@ const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
         <div className="mx-auto max-w-5xl p-4 sm:p-8">
 <Glass className="overflow-hidden bg-transparent" dark>
   {/* NEW: blur + dim only the area under the modal card */}
-  <div className="pointer-events-none absolute inset-0 backdrop-blur-2xl bg-slate-950/40" />
+  <div className="pointer-events-none absolute inset-0 backdrop-blur-3xl bg-slate-950/55" />
 
   {/* modal content stays crisp above the blur */}
   <div className="relative z-10">
