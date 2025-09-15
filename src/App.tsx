@@ -337,40 +337,20 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
   );
 };
 
+
+
+
 type CaseStudyModalProps = { open: boolean; onClose: () => void; project: Project };
 const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
   if (!open) return null;
-
-  // Lock background scroll while modal is open
-  React.useEffect(() => {
-    const { body } = document;
-    const prev = body.style.overflow;
-    body.style.overflow = "hidden";
-    return () => {
-      body.style.overflow = prev;
-    };
-  }, []);
-
   return (
     <div className="fixed inset-0 z-50" aria-modal>
-      {/* Stronger, blurred scrim to push background away */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm" onClick={onClose}></div>
       <div className="absolute inset-0 overflow-auto">
         <div className="mx-auto max-w-5xl p-4 sm:p-8">
-          {/* Add frosted background to the card for readability */}
-          <Glass
-            className="overflow-hidden supports-[backdrop-filter]:backdrop-blur-md bg-white/70 dark:bg-slate-900/70"
-            dark
-          >
+          <Glass className="overflow-hidden" dark>
             <div className="relative h-64 sm:h-96">
-              <img
-                src={project.image}
-                alt={project.name}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
+              <img src={project.image} alt={project.name} className="absolute inset-0 h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <button
                 onClick={onClose}
@@ -383,33 +363,26 @@ const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
                 <h3 className="text-2xl font-semibold text-white">{project.name}</h3>
               </div>
             </div>
-
-            {/* Optional extra readability layer just for the text grid */}
-            <div className="supports-[backdrop-filter]:backdrop-blur-sm bg-white/70 dark:bg-slate-950/60">
-              <div className="grid gap-6 p-6 sm:grid-cols-3">
-                <div className="sm:col-span-2 text-slate-900/90 dark:text-white/90 leading-relaxed">
-                  {project.body}
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {project.stack.map((s, i) => (
-                      <span
-                        key={i}
-                        className="rounded-full bg-white/70 dark:bg-white/10 px-2.5 py-1 text-[11px] ring-1 ring-white/40 dark:ring-white/15"
-                      >
-                        {s}
-                      </span>
-                    ))}
-                  </div>
+            <div className="grid gap-6 p-6 sm:grid-cols-3">
+              <div className="sm:col-span-2 text-white/90 leading-relaxed">
+                {project.body}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {project.stack.map((s, i) => (
+                    <span key={i} className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] ring-1 ring-white/15">
+                      {s}
+                    </span>
+                  ))}
                 </div>
-                <div>
-                  <div className="mb-2 text-sm text-slate-700/80 dark:text-white/70">Key Metrics</div>
-                  <div className="grid grid-cols-3 gap-2">
-                    {project.metrics.map((m, i) => (
-                      <div key={i} className="rounded-lg bg-white/80 dark:bg-white/10 p-3 text-center ring-1 ring-white/40 dark:ring-white/10">
-                        <div className="text-lg font-bold text-emerald-600 dark:text-emerald-300">{m.v}</div>
-                        <div className="text-[11px] text-slate-700/80 dark:text-white/70">{m.k}</div>
-                      </div>
-                    ))}
-                  </div>
+              </div>
+              <div>
+                <div className="mb-2 text-sm text-white/70">Key Metrics</div>
+                <div className="grid grid-cols-3 gap-2">
+                  {project.metrics.map((m, i) => (
+                    <div key={i} className="rounded-lg bg-white/10 p-3 text-center ring-1 ring-white/10">
+                      <div className="text-lg font-bold text-emerald-300">{m.v}</div>
+                      <div className="text-[11px] text-white/70">{m.k}</div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1041,11 +1014,7 @@ export default function App() {
         .pill { border-radius: 9999px; background: #0f172a; color: #fff; box-shadow: 0 6px 18px rgba(2,6,23,0.15); position: relative; overflow: hidden; }
         .dark .pill { background: rgba(255,255,255,.10); color: #fff; box-shadow: 0 6px 18px rgba(255,255,255,0.06); }
         .pill:after { content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.28) 35%, transparent 70%); transform: translateX(-120%); animation: sheen 6s ease-in-out infinite; }
-        @keyframes sheen {
-          0% { transform: translateX(-120%); }
-          40% { transform: translateX(120%); }
-          100% { transform: translateX(120%); }
-        }
+        @keyframes sheen { 0% { transform: translateX(-120%); } 40% { transform: translateX(120%); } 100% { transform: translateX(120%); } 
       `}</style>
 
       {/* modal */}
