@@ -344,7 +344,7 @@ type CaseStudyModalProps = { open: boolean; onClose: () => void; project: Projec
 const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 isolate" aria-modal>>
+    <div className="fixed inset-0 z-50 isolate" aria-modal>
       <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-2xl backdrop-brightness-50" onClick={onClose}></div>
       <div className="absolute inset-0 overflow-auto">
         <div className="mx-auto max-w-5xl p-4 sm:p-8">
