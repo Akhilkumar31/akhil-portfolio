@@ -341,75 +341,86 @@ const Mascot = ({ isDark, triggerKey }: MascotProps) => {
 
 
 type CaseStudyModalProps = { open: boolean; onClose: () => void; project: Project };
+
 const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
   if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-[999] isolate" aria-modal>
-      <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-xl" onClick={onClose}></div>
-      <div className="absolute inset-0 overflow-auto">
-        <div className="mx-auto max-w-5xl p-4 sm:p-8">
-<Glass className="overflow-hidden bg-transparent" dark>
-  {/* NEW: blur + dim only the area under the modal card */}
-  <div className="pointer-events-none absolute inset-0 backdrop-blur-3xl bg-slate-950/55" />
 
-  {/* modal content stays crisp above the blur */}
-  <div className="relative z-10">
-    <div className="relative h-64 sm:h-96">
-      <img
-        src={project.image}
-        alt={project.name}
-        className="absolute inset-0 h-full w-full object-cover"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+  return (
+    <div className="fixed inset-0 z-[999]" aria-modal>
+      {/* Backdrop: blur + dim the whole page */}
       <button
         onClick={onClose}
-        className="absolute right-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm ring-1 ring-white/15 hover:bg-white/20"
-      >
-        <X className="h-4 w-4" /> Close
-      </button>
-      <div className="absolute bottom-4 left-4">
-        <div className="text-xs uppercase tracking-wider text-white/70">{project.tag}</div>
-        <h3 className="text-2xl font-semibold text-white">{project.name}</h3>
-      </div>
-    </div>
+        aria-label="Close"
+        className="absolute inset-0 bg-slate-950/65 backdrop-blur-md"
+      />
 
-    <div className="grid gap-6 p-6 sm:grid-cols-3">
-      <div className="sm:col-span-2 text-white/90 leading-relaxed">
-        {project.body}
-        <div className="mt-4 flex flex-wrap gap-2">
-          {project.stack.map((s, i) => (
-            <span
-              key={i}
-              className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] ring-1 ring-white/15"
-            >
-              {s}
-            </span>
-          ))}
-        </div>
-      </div>
-      <div>
-        <div className="mb-2 text-sm text-white/70">Key Metrics</div>
-        <div className="grid grid-cols-3 gap-2">
-          {project.metrics.map((m, i) => (
-            <div
-              key={i}
-              className="rounded-lg bg-white/10 p-3 text-center ring-1 ring-white/10"
-            >
-              <div className="text-lg font-bold text-emerald-300">{m.v}</div>
-              <div className="text-[11px] text-white/70">{m.k}</div>
+      {/* Modal scroll area */}
+      <div className="absolute inset-0 overflow-auto">
+        <div className="mx-auto max-w-5xl p-4 sm:p-8">
+          {/* Card: semi-opaque 'glass' so background text never competes */}
+          <div className="relative overflow-hidden rounded-2xl ring-1 ring-white/15 shadow-[0_10px_30px_-10px_rgba(2,6,23,0.5)] 
+                          bg-slate-900/75 supports-[backdrop-filter]:bg-slate-900/55 supports-[backdrop-filter]:backdrop-blur-2xl">
+            {/* Header with image */}
+            <div className="relative h-64 sm:h-96">
+              <img
+                src={project.image}
+                alt={project.name}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
+
+              <button
+                onClick={onClose}
+                className="absolute right-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm ring-1 ring-white/15 hover:bg-white/20"
+              >
+                <X className="h-4 w-4" /> Close
+              </button>
+
+              <div className="absolute bottom-4 left-4">
+                <div className="text-xs uppercase tracking-wider text-white/70">{project.tag}</div>
+                <h3 className="text-2xl font-semibold text-white">{project.name}</h3>
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-</Glass>
+
+            {/* Body */}
+            <div className="grid gap-6 p-6 sm:grid-cols-3">
+              <div className="sm:col-span-2 text-white/90 leading-relaxed">
+                {project.body}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {project.stack.map((s, i) => (
+                    <span
+                      key={i}
+                      className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] ring-1 ring-white/15"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="mb-2 text-sm text-white/70">Key Metrics</div>
+                <div className="grid grid-cols-3 gap-2">
+                  {project.metrics.map((m, i) => (
+                    <div
+                      key={i}
+                      className="rounded-lg bg-white/10 p-3 text-center ring-1 ring-white/10"
+                    >
+                      <div className="text-lg font-bold text-emerald-300">{m.v}</div>
+                      <div className="text-[11px] text-white/70">{m.k}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* /Body */}
+          </div>
+          {/* /Card */}
         </div>
       </div>
     </div>
   );
 };
-
 /** ========================= PAGE ========================= */
 export default function App() {
   // theme
