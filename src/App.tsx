@@ -348,7 +348,7 @@ const CaseStudyModal = ({ open, onClose, project }: CaseStudyModalProps) => {
       <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-xl" onClick={onClose}></div>
       <div className="absolute inset-0 overflow-auto">
         <div className="mx-auto max-w-5xl p-4 sm:p-8">
-         <Glass className="overflow-hidden bg-slate-900/70" dark>
+         <Glass className="overflow-hidden backdrop-blur-lg bg-white/10" dark>
             <div className="relative h-64 sm:h-96">
               <img src={project.image} alt={project.name} className="absolute inset-0 h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
