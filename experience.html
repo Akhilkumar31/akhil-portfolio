@@ -31,7 +31,7 @@
         <a href="assets/Resume.docx" target="_blank" rel="noopener">RESUME</a>
       </div>
 
-      <a class="nav2-right" href="mailto:akhilkumar312001@gmail.com" aria-label="Contact">
+      <a class="nav2-right" href="/cdn-cgi/l/email-protection#fc9d979495909789919d8ecfcdcecccccdbc9b919d9590d29f9391" aria-label="Contact">
         <span class="nav2-ring"></span>
       </a>
     </div>
@@ -71,19 +71,11 @@
             <div class="title">Impact highlights</div>
             <div class="desc" style="margin-top:10px;">
               <ul style="margin:0; padding-left:18px; line-height:1.85;">
-                <li>Improved high-frequency request paths with caching + flow refactors, achieving
-                  <strong>~20–30%</strong> gains.
-                </li>
-                <li>Reduced slow-response alerts by <strong>~10–15/day</strong> in lower environments by removing
-                  inefficient paths.</li>
-                <li>Optimized critical lookup queries (indexes + SQL tuning), bringing execution from
-                  <strong>~90–120ms</strong> → <strong>~70–85ms</strong>.
-                </li>
-                <li>Improved CI reliability, cutting nightly Jenkins failures from <strong>~4–5/week</strong> →
-                  <strong>~1–2/week</strong>.
-                </li>
-                <li>Validated <strong>~8–10</strong> onboarding flows per release using internal trace tooling to
-                  prevent regressions.</li>
+                <li>Cut service latency <strong>25%</strong> on Java/Spring Boot metadata microservices serving <strong>10+</strong> internal consumers via request-flow refactors and targeted in-memory caching.</li>
+                <li>Reduced MySQL metadata lookup time from <strong>120ms → 85ms</strong> by rewriting N+1 queries, adding composite indexes, and eliminating full-table scans—verified under load via Prometheus.</li>
+                <li>Cut CI/CD regression rate <strong>28%</strong> by authoring JUnit unit and end-to-end tests covering <strong>9 onboarding workflows</strong> in Jenkins pipelines.</li>
+                <li>Eliminated synchronous timeout failures at peak load by decoupling metadata sync via <strong>Apache Kafka</strong>; reduced direct coupling across <strong>6+</strong> consumers.</li>
+                <li>Reduced pod restart incidents <strong>30%</strong> in staging/production by configuring liveness/readiness probes and HPA on Amazon EKS.</li>
               </ul>
             </div>
           </div>
@@ -99,58 +91,45 @@
 
         <div class="list2">
 
-          <!-- Role: Informatica | Software Engineer -->
           <div class="item2">
             <div class="title">Informatica — Software Engineer</div>
-            <div class="meta">Sep 2022 – Dec 2023 · Java · Spring Boot · MySQL · IDMC</div>
+            <div class="meta">Sep 2022 – Dec 2023 · Java · Spring Boot · Kafka · Kubernetes/EKS · MySQL · gRPC · Prometheus</div>
 
             <div class="desc" style="margin-top:10px;">
               <span class="hl hl-green" style="font-size:14px; box-shadow:none; border-width:3px;">Microservices</span>
-              <span class="hl hl-purple" style="font-size:14px; box-shadow:none; border-width:3px;">API Contracts</span>
-              <span class="hl hl-orange" style="font-size:14px; box-shadow:none; border-width:3px;">Perf + CI</span>
+              <span class="hl hl-purple" style="font-size:14px; box-shadow:none; border-width:3px;">Event-Driven</span>
+              <span class="hl hl-orange" style="font-size:14px; box-shadow:none; border-width:3px;">Observability</span>
             </div>
 
             <div class="desc" style="margin-top:12px;">
               <ul style="margin:0; padding-left:18px; line-height:1.85;">
-                <li>Primary contributor for onboarding metadata microservices in the IDMC platform, responsible for
-                  changes, stability, and releases.</li>
-                <li>Defined API contracts, validation rules, and schema updates with backward compatibility for
-                  dependent teams.</li>
-                <li>Improved request-path performance by ~20–30% via caching and query tuning, reducing onboarding
-                  service latency in high-frequency distributed workflows.</li>
-                <li>Optimized MySQL queries and indexing for critical metadata lookups, improving response consistency.
-                </li>
-                <li>Acted as first responder for Jenkins CI/CD failures, improving pipeline reliability over multiple
-                  releases.</li>
-                <li>Reduced onboarding-related regressions by reviewing integrations and validating ~8–10 end-to-end
-                  flows per release.</li>
+                <li>Cut service latency <strong>25%</strong> on Java/Spring Boot metadata microservices (10+ internal consumers) by refactoring request flow and adding targeted in-memory caching on hot paths.</li>
+                <li>Decoupled metadata sync via Apache Kafka topics, eliminating synchronous timeout failures at peak provisioning load and reducing direct coupling across <strong>6+</strong> consumers.</li>
+                <li>Deployed and managed cloud-native microservices on <strong>Amazon EKS</strong>; configured liveness/readiness probes and HPA, reducing pod restart incidents <strong>30%</strong> during traffic spikes.</li>
+                <li>Reduced MySQL metadata lookup time from <strong>120ms → 85ms</strong> by rewriting N+1 queries, adding composite indexes, and eliminating full-table scans—verified under load via Prometheus.</li>
+                <li>Cut CI/CD regression rate <strong>28%</strong> by authoring JUnit unit and end-to-end tests covering <strong>9 onboarding workflows</strong> in Jenkins pipelines within Agile/Scrum sprints.</li>
+                <li>Built Prometheus and Grafana observability dashboards tracking REST API latency and error rates; caught two slow-query regressions before production deployment.</li>
+                <li>Exposed metadata service APIs over <strong>gRPC</strong> with Protobuf contracts consumed by <strong>4+</strong> downstream services, reducing serialization overhead vs. prior JSON/REST calls.</li>
               </ul>
             </div>
           </div>
 
-          <!-- Role: Wing Communications | Associate Software Engineer -->
           <div class="item2">
-            <div class="title">Wing Communications — Associate Software Engineer</div>
-            <div class="meta">Oct 2020 – Aug 2022 · Java · Spring Boot · MySQL · Jenkins</div>
+            <div class="title">Wing Communications — Software Engineer</div>
+            <div class="meta">Oct 2020 – Aug 2022 · Java · Spring Boot · Kafka · MySQL · Jenkins</div>
 
             <div class="desc" style="margin-top:10px;">
-              <span class="hl hl-green" style="font-size:14px; box-shadow:none; border-width:3px;">Request Paths</span>
-              <span class="hl hl-purple" style="font-size:14px; box-shadow:none; border-width:3px;">Caching</span>
+              <span class="hl hl-green" style="font-size:14px; box-shadow:none; border-width:3px;">Onboarding Flows</span>
+              <span class="hl hl-purple" style="font-size:14px; box-shadow:none; border-width:3px;">Kafka</span>
               <span class="hl hl-orange" style="font-size:14px; box-shadow:none; border-width:3px;">SQL Tuning</span>
             </div>
 
             <div class="desc" style="margin-top:12px;">
               <ul style="margin:0; padding-left:18px; line-height:1.85;">
-                <li>Delivered backend features for customer onboarding and metadata flows using Java, Spring Boot,
-                  and MySQL, supporting new self-serve account workflows.</li>
-                <li>Improved validation and error handling by surfacing edge cases during design reviews, reducing
-                  rework and QA churn.</li>
-                <li>Tuned frequently accessed metadata queries, improving execution time from ~90–120ms to ~70–85ms
-                  and resulting in smoother onboarding UI interactions.</li>
-                <li>Stabilized CI/CD pipelines by resolving recurring Jenkins failures, cutting nightly failures from
-                  ~4–5/week to ~1–2/week.</li>
-                <li>Verified new onboarding scenarios using internal trace tools, validating ~8–10 flows per release.
-                </li>
+                <li>Designed and shipped three self-serve account onboarding flows in Java/Spring Boot, reducing activation time from <strong>2–3 days → under 4 hours</strong> and eliminating <strong>15 manual ops interventions/week</strong>.</li>
+                <li>Eliminated <strong>4–5 nightly Jenkins CI/CD failures/week</strong> caused by shared-database test contention; introduced per-suite rollback transactions, recovering hours of engineering time weekly across a 6-person Agile team.</li>
+                <li>Resolved a recurring <strong>2–3 second UI stall</strong> by tracing root cause to five unindexed high-frequency MySQL queries; redesigned indexes and rewrote query logic, reducing median API latency from <strong>110ms → 65ms</strong>.</li>
+                <li>Integrated <strong>Apache Kafka</strong> event streaming for account status change notifications, replacing a polling mechanism that hit the database every 30 seconds; reduced DB read load <strong>40%</strong> during peak onboarding windows.</li>
               </ul>
             </div>
           </div>
@@ -196,7 +175,7 @@
         <div class="contact-card">
           <div class="contact-card-inner">
             <h2 class="contact-head">WANT TO COLLABORATE<br />ON A PROJECT?</h2>
-            <a class="contact-cta" href="mailto:akhilkumar312001@gmail.com">Send Email</a>
+            <a class="contact-cta" href="/cdn-cgi/l/email-protection#8aebe1e2e3e6e1ffe7ebf8b9bbb8bababbcaede7ebe3e6a4e9e5e7">Send Email</a>
           </div>
         </div>
 
@@ -210,13 +189,4 @@
             <a class="pill" href="https://www.linkedin.com/in/akhilkumarpuri/" target="_blank"
               rel="noreferrer">LinkedIn</a>
           </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <script src="assets/app.js"></script>
-</body>
-
-</html>
+        </div
