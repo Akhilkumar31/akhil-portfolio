@@ -31,7 +31,7 @@
         <a href="assets/Resume.docx" target="_blank" rel="noopener">RESUME</a>
       </div>
 
-      <a class="nav2-right" href="/cdn-cgi/l/email-protection#fc9d979495909789919d8ecfcdcecccccdbc9b919d9590d29f9391" aria-label="Contact">
+      <a class="nav2-right" href="mailto:akhilkumarpuri2@gmail.com" aria-label="Contact">
         <span class="nav2-ring"></span>
       </a>
     </div>
@@ -47,17 +47,15 @@
         <h1 class="hero-title" style="margin-top: 10px;">
           Building
           <span class="swap"
-            data-words="onboarding metadata services,API validation layers,cache-aware request paths,latency-sensitive REST APIs,query-optimized lookups,CI-stable pipelines,release-safe integrations">
-            onboarding metadata services
+            data-words="full-stack features,React/TypeScript UIs,Java microservices,event-driven pipelines,latency-sensitive REST APIs,query-optimized lookups,CI-stable pipelines">
+            full-stack features
           </span>
-          with <span class="hl hl-green">Spring Boot</span>,
-          boosting <span class="hl hl-purple">reliability</span>,
-          and tuning <span class="hl hl-orange">performance</span>.
+          with <span class="hl hl-purple">React</span>, <span class="hl hl-green">Spring Boot</span>,
+          and <span class="hl hl-orange">Kafka</span>.
         </h1>
 
         <p class="hero-sub">
-          I’ve shipped enhancements across Java/Spring Boot microservices at Informatica—improving CI stability,
-          reducing regressions, and tightening request paths, caching, and SQL for consistent latency.
+          I’ve shipped end-to-end features across React/TypeScript frontends and Java/Spring Boot microservices at Informatica and Wing Communications—improving CI stability, reducing latency, and building self-serve onboarding flows.
         </p>
 
         <div class="hero-links" style="margin-top: 14px;">
@@ -71,11 +69,11 @@
             <div class="title">Impact highlights</div>
             <div class="desc" style="margin-top:10px;">
               <ul style="margin:0; padding-left:18px; line-height:1.85;">
-                <li>Cut service latency <strong>25%</strong> on Java/Spring Boot metadata microservices serving <strong>10+</strong> internal consumers via request-flow refactors and targeted in-memory caching.</li>
+                <li>Shipped self-serve UI in <strong>React.js + TypeScript</strong> (Tailwind CSS) at Informatica, giving admins control over <strong>10+</strong> microservice configs and eliminating a manual ops touchpoint entirely.</li>
+                <li>Cut API latency <strong>25%</strong> on Java/Spring Boot metadata microservices via request-flow refactors and in-memory caching; issues surfaced through React performance profiling before backend investigation.</li>
                 <li>Reduced MySQL metadata lookup time from <strong>120ms → 85ms</strong> by rewriting N+1 queries, adding composite indexes, and eliminating full-table scans—verified under load via Prometheus.</li>
-                <li>Cut CI/CD regression rate <strong>28%</strong> by authoring JUnit unit and end-to-end tests covering <strong>9 onboarding workflows</strong> in Jenkins pipelines.</li>
-                <li>Eliminated synchronous timeout failures at peak load by decoupling metadata sync via <strong>Apache Kafka</strong>; reduced direct coupling across <strong>6+</strong> consumers.</li>
-                <li>Reduced pod restart incidents <strong>30%</strong> in staging/production by configuring liveness/readiness probes and HPA on Amazon EKS.</li>
+                <li>Eliminated synchronous timeout failures at peak load by decoupling metadata sync via <strong>Apache Kafka</strong>; reduced direct coupling across <strong>6+</strong> frontend-triggering consumers.</li>
+                <li>Shipped three end-to-end onboarding flows at Wing Communications, cutting activation from <strong>2–3 days → under 4 hours</strong> and eliminating <strong>15 manual ops interventions/week</strong>.</li>
               </ul>
             </div>
           </div>
@@ -93,43 +91,43 @@
 
           <div class="item2">
             <div class="title">Informatica — Software Engineer</div>
-            <div class="meta">Sep 2022 – Dec 2023 · Java · Spring Boot · Kafka · Kubernetes/EKS · MySQL · gRPC · Prometheus</div>
+            <div class="meta">Sep 2022 – Dec 2023 · React · TypeScript · Java · Spring Boot · Kafka · Kubernetes/EKS · MySQL · gRPC · Prometheus</div>
 
             <div class="desc" style="margin-top:10px;">
-              <span class="hl hl-green" style="font-size:14px; box-shadow:none; border-width:3px;">Microservices</span>
+              <span class="hl hl-green" style="font-size:14px; box-shadow:none; border-width:3px;">Full Stack</span>
               <span class="hl hl-purple" style="font-size:14px; box-shadow:none; border-width:3px;">Event-Driven</span>
               <span class="hl hl-orange" style="font-size:14px; box-shadow:none; border-width:3px;">Observability</span>
             </div>
 
             <div class="desc" style="margin-top:12px;">
               <ul style="margin:0; padding-left:18px; line-height:1.85;">
-                <li>Cut service latency <strong>25%</strong> on Java/Spring Boot metadata microservices (10+ internal consumers) by refactoring request flow and adding targeted in-memory caching on hot paths.</li>
-                <li>Decoupled metadata sync via Apache Kafka topics, eliminating synchronous timeout failures at peak provisioning load and reducing direct coupling across <strong>6+</strong> consumers.</li>
+                <li>Built the IDMC metadata config UI in <strong>React.js + TypeScript</strong> (Tailwind CSS), giving admins a self-serve interface for 10+ microservice configs and eliminating a manual ops touchpoint entirely.</li>
+                <li>Cut service latency <strong>25%</strong> on Java/Spring Boot metadata microservices by refactoring request flow and adding targeted in-memory caching on hot paths; issues surfaced through React performance profiling before backend investigation.</li>
+                <li>Exposed metadata APIs over <strong>gRPC</strong> with Protobuf contracts; built TypeScript client layer consumed by the React frontend, ensuring type-safe contracts between UI and <strong>4+</strong> downstream services.</li>
+                <li>Decoupled metadata sync via Apache Kafka topics, eliminating synchronous timeout failures at peak provisioning load and reducing direct coupling across <strong>6+</strong> frontend-triggering consumers.</li>
                 <li>Deployed and managed cloud-native microservices on <strong>Amazon EKS</strong>; configured liveness/readiness probes and HPA, reducing pod restart incidents <strong>30%</strong> during traffic spikes.</li>
                 <li>Reduced MySQL metadata lookup time from <strong>120ms → 85ms</strong> by rewriting N+1 queries, adding composite indexes, and eliminating full-table scans—verified under load via Prometheus.</li>
-                <li>Cut CI/CD regression rate <strong>28%</strong> by authoring JUnit unit and end-to-end tests covering <strong>9 onboarding workflows</strong> in Jenkins pipelines within Agile/Scrum sprints.</li>
-                <li>Built Prometheus and Grafana observability dashboards tracking REST API latency and error rates; caught two slow-query regressions before production deployment.</li>
-                <li>Exposed metadata service APIs over <strong>gRPC</strong> with Protobuf contracts consumed by <strong>4+</strong> downstream services, reducing serialization overhead vs. prior JSON/REST calls.</li>
+                <li>Cut CI/CD regression rate <strong>28%</strong> by authoring JUnit + E2E tests covering <strong>9 onboarding workflows</strong> (Jenkins) and Cypress tests for critical UI flows; failures caught in PR builds before staging.</li>
               </ul>
             </div>
           </div>
 
           <div class="item2">
             <div class="title">Wing Communications — Software Engineer</div>
-            <div class="meta">Oct 2020 – Aug 2022 · Java · Spring Boot · Kafka · MySQL · Jenkins</div>
+            <div class="meta">Oct 2020 – Aug 2022 · React.js · Java · Spring Boot · Kafka · WebSocket · MySQL · Jenkins</div>
 
             <div class="desc" style="margin-top:10px;">
-              <span class="hl hl-green" style="font-size:14px; box-shadow:none; border-width:3px;">Onboarding Flows</span>
+              <span class="hl hl-green" style="font-size:14px; box-shadow:none; border-width:3px;">Full Stack</span>
               <span class="hl hl-purple" style="font-size:14px; box-shadow:none; border-width:3px;">Kafka</span>
               <span class="hl hl-orange" style="font-size:14px; box-shadow:none; border-width:3px;">SQL Tuning</span>
             </div>
 
             <div class="desc" style="margin-top:12px;">
               <ul style="margin:0; padding-left:18px; line-height:1.85;">
-                <li>Designed and shipped three self-serve account onboarding flows in Java/Spring Boot, reducing activation time from <strong>2–3 days → under 4 hours</strong> and eliminating <strong>15 manual ops interventions/week</strong>.</li>
-                <li>Eliminated <strong>4–5 nightly Jenkins CI/CD failures/week</strong> caused by shared-database test contention; introduced per-suite rollback transactions, recovering hours of engineering time weekly across a 6-person Agile team.</li>
-                <li>Resolved a recurring <strong>2–3 second UI stall</strong> by tracing root cause to five unindexed high-frequency MySQL queries; redesigned indexes and rewrote query logic, reducing median API latency from <strong>110ms → 65ms</strong>.</li>
-                <li>Integrated <strong>Apache Kafka</strong> event streaming for account status change notifications, replacing a polling mechanism that hit the database every 30 seconds; reduced DB read load <strong>40%</strong> during peak onboarding windows.</li>
+                <li>Designed and shipped three self-serve onboarding flows end-to-end (<strong>React.js + Spring Boot</strong>), cutting activation time from <strong>2–3 days → under 4 hours</strong> and eliminating <strong>15 manual ops interventions/week</strong>.</li>
+                <li>Built real-time account status dashboard in <strong>React (WebSocket)</strong> backed by Kafka event streaming, replacing a 30-second DB polling loop and cutting DB read load <strong>40%</strong> during peak windows.</li>
+                <li>Resolved a recurring <strong>2–3 second UI stall</strong> traced to 5 unindexed MySQL queries via frontend profiling; redesigned indexes and rewrote query logic, reducing median API latency from <strong>110ms → 65ms</strong>.</li>
+                <li>Eliminated <strong>4–5 nightly Jenkins CI/CD failures/week</strong> via per-suite rollback transactions; standardized frontend pipeline (ESLint, Prettier, Vite), recovering <strong>3 engineering hours/week</strong>.</li>
               </ul>
             </div>
           </div>
@@ -175,7 +173,7 @@
         <div class="contact-card">
           <div class="contact-card-inner">
             <h2 class="contact-head">WANT TO COLLABORATE<br />ON A PROJECT?</h2>
-            <a class="contact-cta" href="/cdn-cgi/l/email-protection#8aebe1e2e3e6e1ffe7ebf8b9bbb8bababbcaede7ebe3e6a4e9e5e7">Send Email</a>
+            <a class="contact-cta" href="mailto:akhilkumarpuri2@gmail.com">Send Email</a>
           </div>
         </div>
 
