@@ -1747,61 +1747,66 @@ a:hover {
 body { animation: pageIn .55s cubic-bezier(.2,.8,.2,1) both; }
 
 /* ── Custom cursor ──────────────────────────────────────────
-   #cur     = bubble-shaped dot at EXACT mouse position
-   #cur-ring = larger soft ring, spring-lagged for depth      */
+   CRITICAL RULES:
+   - #cur is ALWAYS 22×22px. JS uses CUR_HW=11 as a constant.
+   - #cur-ring is ALWAYS 52×52px. JS uses RING_HW=26 as a constant.
+   - NEVER change width/height in any state — use scale() instead.
+     Changing width/height breaks the hardcoded half-size math in JS.
+   - Both start off-screen via JS-set transform before first paint.  */
 
 body.has-cursor * { cursor: none !important; }
 
 #cur {
   position: fixed;
-  left: 0; top: 0;               /* positioned by transform only */
-  width: 22px; height: 22px;
+  left: 0; top: 0;
+  width: 22px; height: 22px;         /* FIXED — JS depends on this */
   border-radius: 999px;
   background: rgba(255,255,255,.92);
   border: 3px solid rgba(0,0,0,.80);
-  box-shadow: 0 4px 0 rgba(0,0,0,.35), 0 0 14px rgba(255,255,255,.12);
+  box-shadow: 0 4px 0 rgba(0,0,0,.35), 0 0 10px rgba(255,255,255,.10);
   pointer-events: none;
   z-index: 9999;
   will-change: transform;
-  /* NO transition — follows mouse instantly */
+  /* NO transition on transform — must follow mouse frame-perfectly */
+  transition: background .18s ease, box-shadow .18s ease, scale .18s ease;
 }
 
 #cur-ring {
   position: fixed;
   left: 0; top: 0;
-  width: 52px; height: 52px;
+  width: 52px; height: 52px;         /* FIXED — JS depends on this */
   border-radius: 999px;
   border: 2px solid rgba(255,255,255,.28);
   pointer-events: none;
   z-index: 9998;
   will-change: transform;
-  transition:
-    width  .26s cubic-bezier(.2,.8,.2,1),
-    height .26s cubic-bezier(.2,.8,.2,1),
-    border-color .26s ease,
-    background   .26s ease;
+  /* Only non-transform properties transition */
+  transition: scale .26s cubic-bezier(.2,.8,.2,1),
+              border-color .26s ease,
+              background   .26s ease;
 }
 
-/* hover state: ring expands + turns accent green, dot becomes a pin */
+/* Hover: use scale() — width/height stay constant so JS math stays valid */
 body.cur-hover #cur {
-  width: 10px; height: 10px;
+  scale: 0.45;                          /* 22px → ~10px visual */
   background: var(--green);
   border-color: rgba(0,0,0,.70);
-  box-shadow: 0 0 12px rgba(184,255,90,.55);
+  box-shadow: 0 0 14px rgba(184,255,90,.60);
 }
 body.cur-hover #cur-ring {
-  width: 70px; height: 70px;
+  scale: 1.35;                          /* 52px → ~70px visual */
   border-color: rgba(184,255,90,.60);
   background: rgba(184,255,90,.06);
 }
 
-/* drag state: ring becomes orange */
+/* Drag: orange */
 body.cur-drag #cur {
-  width: 16px; height: 16px;
+  scale: 0.72;
   background: var(--orange);
+  box-shadow: 0 0 14px rgba(255,106,61,.50);
 }
 body.cur-drag #cur-ring {
-  width: 80px; height: 80px;
+  scale: 1.55;
   border-color: rgba(255,106,61,.65);
   border-width: 3px;
 }

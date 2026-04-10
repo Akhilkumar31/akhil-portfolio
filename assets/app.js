@@ -690,63 +690,56 @@
   });
 })();
 
-// 2 — Custom cursor: bubble-shaped circle follows mouse EXACTLY
-//     A soft ring trails behind with spring interpolation
+// 2 — Custom cursor: pixel-perfect, zero DOM reads in the hot path
 (function () {
   if (window.matchMedia('(pointer: coarse)').matches) return;
 
-  // bubble-style dot — this IS the cursor, sits at exact mouse position
   var cur  = document.createElement('div'); cur.id  = 'cur';
-  // soft trailing ring — slightly lagged for depth
   var ring = document.createElement('div'); ring.id = 'cur-ring';
-  document.body.appendChild(ring);   // ring behind
-  document.body.appendChild(cur);    // dot on top
+  document.body.appendChild(ring);
+  document.body.appendChild(cur);
   document.body.classList.add('has-cursor');
 
-  var mx = -200, my = -200;
-  var rx = -200, ry = -200;
-  var visible = false;
+  // CONSTANTS — never read offsetWidth again (CSS must match these)
+  var CUR_HW  = 11;   // #cur  22px / 2
+  var RING_HW = 26;   // #cur-ring 52px / 2
 
-  function place(x, y) {
-    // translate-based positioning — GPU composited, never out of sync
-    var hw = cur.offsetWidth  / 2;
-    var hh = cur.offsetHeight / 2;
-    cur.style.transform  = 'translate(' + (x - hw) + 'px,' + (y - hh) + 'px)';
-  }
+  // Start both well off-screen so neither flashes at (0,0) on first paint
+  var OFF = -500;
+  var mx = OFF, my = OFF;
+  var rx = OFF, ry = OFF;
+  var started = false;
 
-  document.addEventListener('mousemove', function (e) {
-    mx = e.clientX; my = e.clientY;
-    if (!visible) { rx = mx; ry = my; visible = true; }
-    place(mx, my);
-  });
+  cur.style.transform  = 'translate(' + (OFF - CUR_HW)  + 'px,' + (OFF - CUR_HW)  + 'px)';
+  ring.style.transform = 'translate(' + (OFF - RING_HW) + 'px,' + (OFF - RING_HW) + 'px)';
 
-  document.addEventListener('mouseleave', function () {
-    cur.style.opacity  = '0';
-    ring.style.opacity = '0';
-  });
-  document.addEventListener('mouseenter', function () {
-    cur.style.opacity  = '';
-    ring.style.opacity = '';
-  });
+  // window (not document) — more reliable, survives scroll + iframe focus changes
+  window.addEventListener('mousemove', function (e) {
+    mx = e.clientX;
+    my = e.clientY;
+    if (!started) {
+      // snap ring to mouse on first entry so it doesn't fly in from off-screen
+      rx = mx; ry = my;
+      started = true;
+    }
+    // Dot: zero lag — written directly here, not in RAF loop
+    cur.style.transform = 'translate(' + (mx - CUR_HW) + 'px,' + (my - CUR_HW) + 'px)';
+  }, { passive: true });
 
-  // ring follows with gentle spring (fast enough to feel connected, slow enough to feel alive)
+  // Ring: spring-lerp RAF loop — ONLY touches ring, never reads DOM
   (function loop() {
     rx += (mx - rx) * 0.14;
     ry += (my - ry) * 0.14;
-    var rw = ring.offsetWidth  / 2;
-    var rh = ring.offsetHeight / 2;
-    ring.style.transform = 'translate(' + (rx - rw) + 'px,' + (ry - rh) + 'px)';
+    ring.style.transform = 'translate(' + ((rx - RING_HW) | 0) + 'px,' + ((ry - RING_HW) | 0) + 'px)';
     requestAnimationFrame(loop);
   })();
 
-  // hover state — ring expands + goes green, dot shrinks to a pin
+  // Hover / drag state — pure class toggles, CSS does the rest
   var hovSel = 'a, button, .ebubble, .chip, .pill, .contact-cta, .proj-nav, .cert-card, .nav2-logo, .nav2-right';
   document.querySelectorAll(hovSel).forEach(function (el) {
     el.addEventListener('mouseenter', function () { document.body.classList.add('cur-hover'); });
     el.addEventListener('mouseleave', function () { document.body.classList.remove('cur-hover'); });
   });
-
-  // drag state
   document.querySelectorAll('.ebubble').forEach(function (b) {
     b.addEventListener('pointerdown', function () { document.body.classList.add('cur-drag'); });
   });
