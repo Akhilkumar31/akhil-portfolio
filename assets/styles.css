@@ -135,6 +135,7 @@ a:hover {
    NAV pill
    ========================= */
 .nav2 {
+  animation: pageIn .45s .05s cubic-bezier(.2,.8,.2,1) both;
   position: sticky;
   top: 14px;
   z-index: 50;
@@ -1739,12 +1740,14 @@ a:hover {
    WORLD-CLASS ANIMATION PACK v2
    ============================================================ */
 
-/* Page entry */
+/* Page entry — MUST be on .wrap, NOT body.
+   Fixed-position children of body (cursor) become invisible
+   whenever body has opacity < 1, even with z-index:9999.      */
 @keyframes pageIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-body { animation: pageIn .55s cubic-bezier(.2,.8,.2,1) both; }
+.wrap { animation: pageIn .55s cubic-bezier(.2,.8,.2,1) both; }
 
 /* ── Custom cursor ──────────────────────────────────────────
    CRITICAL RULES:
