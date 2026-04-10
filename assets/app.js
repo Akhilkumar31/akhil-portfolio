@@ -671,76 +671,191 @@
 
 
 // ============================================================
-//  WORLD-CLASS ANIMATION PACK
-//  1. Staggered bubble float  2. Custom cursor + spring ring
-//  3. Magnetic buttons        4. Hero mouse parallax
-//  5. Kinetic counters
+//  WORLD-CLASS ANIMATION PACK v2
+//  1. Staggered bubble float
+//  2. Custom cursor — bubble-shaped, pixel-perfect, no lag
+//  3. Sparkle particle trail
+//  4. 3D perspective card tilt
+//  5. Magnetic buttons
+//  6. Hero mouse parallax
+//  7. Kinetic counters
+//  8. Hero tag char-by-char entrance
 // ============================================================
 
-// 1 — Staggered bubble float timing
-// Each bubble gets a unique delay + duration so they never bob in sync
+// 1 — Staggered bubble float: each bubble unique delay + duration
 (function () {
   document.querySelectorAll('.ebubble').forEach(function (b, i) {
-    b.style.setProperty('--float-delay', '-' + ((i * 0.38) % 5.4).toFixed(2) + 's');
-    b.style.setProperty('--float-dur',         (3.5 + (i % 7) * 0.42).toFixed(2) + 's');
+    b.style.setProperty('--float-delay', '-' + ((i * 0.41) % 5.8).toFixed(2) + 's');
+    b.style.setProperty('--float-dur',         (3.6 + (i % 7) * 0.38).toFixed(2) + 's');
   });
 })();
 
-// 2 — Custom cursor with spring-lag ring (desktop only)
+// 2 — Custom cursor: bubble-shaped circle follows mouse EXACTLY
+//     A soft ring trails behind with spring interpolation
 (function () {
   if (window.matchMedia('(pointer: coarse)').matches) return;
 
-  var dot  = document.createElement('div'); dot.id  = 'cursor-dot';
-  var ring = document.createElement('div'); ring.id = 'cursor-ring';
-  var glow = document.createElement('div'); glow.id = 'cursor-glow';
-  document.body.appendChild(dot);
-  document.body.appendChild(ring);
-  document.body.appendChild(glow);
+  // bubble-style dot — this IS the cursor, sits at exact mouse position
+  var cur  = document.createElement('div'); cur.id  = 'cur';
+  // soft trailing ring — slightly lagged for depth
+  var ring = document.createElement('div'); ring.id = 'cur-ring';
+  document.body.appendChild(ring);   // ring behind
+  document.body.appendChild(cur);    // dot on top
   document.body.classList.add('has-cursor');
 
-  var mx = -300, my = -300, rx = -300, ry = -300, gx = -300, gy = -300;
+  var mx = -200, my = -200;
+  var rx = -200, ry = -200;
+  var visible = false;
 
-  document.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; });
-  document.addEventListener('mouseleave', function () { dot.style.opacity = '0'; ring.style.opacity = '0'; });
-  document.addEventListener('mouseenter', function () { dot.style.opacity = ''; ring.style.opacity = ''; });
+  function place(x, y) {
+    // translate-based positioning — GPU composited, never out of sync
+    var hw = cur.offsetWidth  / 2;
+    var hh = cur.offsetHeight / 2;
+    cur.style.transform  = 'translate(' + (x - hw) + 'px,' + (y - hh) + 'px)';
+  }
 
+  document.addEventListener('mousemove', function (e) {
+    mx = e.clientX; my = e.clientY;
+    if (!visible) { rx = mx; ry = my; visible = true; }
+    place(mx, my);
+  });
+
+  document.addEventListener('mouseleave', function () {
+    cur.style.opacity  = '0';
+    ring.style.opacity = '0';
+  });
+  document.addEventListener('mouseenter', function () {
+    cur.style.opacity  = '';
+    ring.style.opacity = '';
+  });
+
+  // ring follows with gentle spring (fast enough to feel connected, slow enough to feel alive)
   (function loop() {
-    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-    rx += (mx - rx) * 0.13; ry += (my - ry) * 0.13;
-    gx += (mx - gx) * 0.055; gy += (my - gy) * 0.055;
-    ring.style.left = rx.toFixed(1) + 'px'; ring.style.top = ry.toFixed(1) + 'px';
-    glow.style.left = gx.toFixed(1) + 'px'; glow.style.top = gy.toFixed(1) + 'px';
+    rx += (mx - rx) * 0.14;
+    ry += (my - ry) * 0.14;
+    var rw = ring.offsetWidth  / 2;
+    var rh = ring.offsetHeight / 2;
+    ring.style.transform = 'translate(' + (rx - rw) + 'px,' + (ry - rh) + 'px)';
     requestAnimationFrame(loop);
   })();
 
-  var hovSel = 'a, button, .ebubble, .chip, .pill, .contact-cta, .proj-nav, .cert-card, .what-row';
+  // hover state — ring expands + goes green, dot shrinks to a pin
+  var hovSel = 'a, button, .ebubble, .chip, .pill, .contact-cta, .proj-nav, .cert-card, .nav2-logo, .nav2-right';
   document.querySelectorAll(hovSel).forEach(function (el) {
     el.addEventListener('mouseenter', function () { document.body.classList.add('cur-hover'); });
     el.addEventListener('mouseleave', function () { document.body.classList.remove('cur-hover'); });
   });
 
+  // drag state
   document.querySelectorAll('.ebubble').forEach(function (b) {
     b.addEventListener('pointerdown', function () { document.body.classList.add('cur-drag'); });
   });
   window.addEventListener('pointerup', function () { document.body.classList.remove('cur-drag'); });
 })();
 
-// 3 — Magnetic buttons: pill / CTA / arrows drift toward cursor
+// 3 — Sparkle particle trail: tiny dots spawn on movement, fade + rise
+(function () {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  var pool = [];
+  var COLORS = ['#b8ff5a','#6a63ff','#ff6a3d','#ffffff'];
+  var lastX = 0, lastY = 0, lastT = 0;
+
+  function spawn(x, y) {
+    var s = pool.pop() || document.createElement('div');
+    s.className = 'spark';
+    var c = COLORS[Math.floor(Math.random() * COLORS.length)];
+    var sz = 4 + Math.random() * 5;
+    s.style.cssText = [
+      'left:' + x + 'px',
+      'top:' + y + 'px',
+      'width:' + sz + 'px',
+      'height:' + sz + 'px',
+      'background:' + c,
+      '--tx:' + ((Math.random() - 0.5) * 38).toFixed(1) + 'px',
+      '--ty:' + (-(16 + Math.random() * 24)).toFixed(1) + 'px',
+      'opacity:1'
+    ].join(';');
+    document.body.appendChild(s);
+    // trigger reflow then animate
+    void s.offsetWidth;
+    s.style.animation = 'sparkFly .65s cubic-bezier(.2,.8,.2,1) forwards';
+    s.addEventListener('animationend', function () {
+      s.style.animation = '';
+      if (s.parentNode) s.parentNode.removeChild(s);
+      pool.push(s);
+    }, { once: true });
+  }
+
+  document.addEventListener('mousemove', function (e) {
+    var now = Date.now();
+    var dx = e.clientX - lastX, dy = e.clientY - lastY;
+    var dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist > 14 && now - lastT > 40) {
+      spawn(e.clientX, e.clientY);
+      lastX = e.clientX; lastY = e.clientY; lastT = now;
+    }
+  });
+})();
+
+// 4 — 3D perspective card tilt: cards tilt toward the mouse
+(function () {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  var sel = '.item2, .what-row, .project-feature, .about-card, .contact-card';
+  document.querySelectorAll(sel).forEach(function (card) {
+    var req = null;
+    var tx = 0, ty = 0, cx = 0, cy = 0;
+
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      cx = ((e.clientX - r.left) / r.width  - 0.5) * 9;   // -4.5..4.5 deg
+      cy = ((e.clientY - r.top)  / r.height - 0.5) * -9;
+    });
+
+    card.addEventListener('mouseenter', function () {
+      (function loop() {
+        tx += (cx - tx) * 0.12;
+        ty += (cy - ty) * 0.12;
+        card.style.transform = 'perspective(700px) rotateY(' + tx + 'deg) rotateX(' + ty + 'deg) translateZ(6px)';
+        req = requestAnimationFrame(loop);
+      })();
+    });
+
+    card.addEventListener('mouseleave', function () {
+      cx = 0; cy = 0;
+      cancelAnimationFrame(req);
+      (function reset() {
+        tx += (0 - tx) * 0.16;
+        ty += (0 - ty) * 0.16;
+        card.style.transform = 'perspective(700px) rotateY(' + tx + 'deg) rotateX(' + ty + 'deg)';
+        if (Math.abs(tx) > 0.05 || Math.abs(ty) > 0.05) requestAnimationFrame(reset);
+        else card.style.transform = '';
+      })();
+    });
+  });
+})();
+
+// 5 — Magnetic buttons: pill / CTA drift toward cursor
 (function () {
   if (window.matchMedia('(pointer: coarse)').matches) return;
 
   document.querySelectorAll('.pill, .contact-cta, .project-btn, .proj-nav').forEach(function (el) {
     el.addEventListener('mousemove', function (e) {
       var r  = el.getBoundingClientRect();
-      var dx = (e.clientX - (r.left + r.width  / 2)) * 0.30;
-      var dy = (e.clientY - (r.top  + r.height / 2)) * 0.30;
-      el.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+      var dx = (e.clientX - (r.left + r.width  / 2)) * 0.28;
+      var dy = (e.clientY - (r.top  + r.height / 2)) * 0.28;
+      el.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(1.04)';
     });
-    el.addEventListener('mouseleave', function () { el.style.transform = ''; });
+    el.addEventListener('mouseleave', function () {
+      el.style.transition = 'transform .4s cubic-bezier(.2,.8,.2,1)';
+      el.style.transform  = '';
+      setTimeout(function () { el.style.transition = ''; }, 400);
+    });
   });
 })();
 
-// 4 — Hero mouse parallax: portrait + text layers move at different depths
+// 6 — Hero mouse parallax: portrait and text move at different depths
 (function () {
   if (window.matchMedia('(pointer: coarse)').matches) return;
   var hero = document.querySelector('.hero');
@@ -750,22 +865,34 @@
   var right = hero.querySelector('.hero-right');
   var tag   = hero.querySelector('.tag');
 
+  var tx1=0,ty1=0, tx2=0,ty2=0, tx3=0,ty3=0;
+  var tdx1=0,tdy1=0, tdx2=0,tdy2=0, tdx3=0,tdy3=0;
+  var rafP = null;
+
   hero.addEventListener('mousemove', function (e) {
     var r  = hero.getBoundingClientRect();
     var dx = (e.clientX - r.left - r.width  / 2) / r.width;
     var dy = (e.clientY - r.top  - r.height / 2) / r.height;
-    if (left)  left.style.transform  = 'translate(' + (dx * -22) + 'px,' + (dy * -13) + 'px)';
-    if (right) right.style.transform = 'translate(' + (dx *  13) + 'px,' + (dy *   8) + 'px)';
-    if (tag)   tag.style.transform   = 'translate(' + (dx *  18) + 'px,' + (dy *  11) + 'px) rotate(' + (dx * 1.8) + 'deg)';
+    tdx1 = dx * -24; tdy1 = dy * -14;
+    tdx2 = dx *  14; tdy2 = dy *   9;
+    tdx3 = dx *  20; tdy3 = dy *  12;
+    if (!rafP) (function loop() {
+      tx1+=(tdx1-tx1)*.10; ty1+=(tdy1-ty1)*.10;
+      tx2+=(tdx2-tx2)*.10; ty2+=(tdy2-ty2)*.10;
+      tx3+=(tdx3-tx3)*.10; ty3+=(tdy3-ty3)*.10;
+      if(left)  left.style.transform  = 'translate('+tx1.toFixed(2)+'px,'+ty1.toFixed(2)+'px)';
+      if(right) right.style.transform = 'translate('+tx2.toFixed(2)+'px,'+ty2.toFixed(2)+'px)';
+      if(tag)   tag.style.transform   = 'translate('+tx3.toFixed(2)+'px,'+ty3.toFixed(2)+'px) rotate('+(tx3*0.08).toFixed(2)+'deg)';
+      rafP = requestAnimationFrame(loop);
+    })();
   });
+
   hero.addEventListener('mouseleave', function () {
-    if (left)  left.style.transform  = '';
-    if (right) right.style.transform = '';
-    if (tag)   tag.style.transform   = '';
+    tdx1=tdy1=tdx2=tdy2=tdx3=tdy3=0;
   });
 })();
 
-// 5 — Kinetic counters: numbers count up from 0 when scrolled into view
+// 7 — Kinetic counters: numbers count up from 0 on scroll into view
 (function () {
   var strongs = document.querySelectorAll('.item2 strong, .desc strong');
   if (!strongs.length) return;
@@ -775,7 +902,6 @@
       if (!e.isIntersecting) return;
       io.unobserve(e.target);
       var orig = e.target.textContent.trim();
-      // only match bare numbers: 25%, 28%, 30%, 6+, 10+, 40%, 9 etc.
       var m = orig.match(/^(\d+)(%|\+)?$/);
       if (!m) return;
       var target = parseInt(m[1], 10);
@@ -795,6 +921,24 @@
   }, { threshold: 0.6 });
 
   strongs.forEach(function (s) { io.observe(s); });
+})();
+
+// 8 — Hero tag char-by-char entrance on page load
+(function () {
+  var tag = document.querySelector('.tag');
+  if (!tag) return;
+  var text = tag.textContent;
+  tag.textContent = '';
+  tag.style.visibility = 'visible';
+  var i = 0;
+  (function next() {
+    if (i >= text.length) return;
+    var span = document.createElement('span');
+    span.textContent = text[i++];
+    span.className = 'char-in';
+    tag.appendChild(span);
+    setTimeout(next, 55);
+  })();
 })();
 
 
