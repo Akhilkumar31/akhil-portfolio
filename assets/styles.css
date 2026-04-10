@@ -1914,3 +1914,273 @@ body.cur-drag #cur-ring {
   display: inline-block;
   animation: charIn .28s cubic-bezier(.2,.8,.2,1) both;
 }
+
+
+/* ================================================================
+   BIG ANIMATIONS — Marquee · Wipe · Split-text · Conic border
+                    Bubble entrance · Spotlight · Glitch
+   ================================================================ */
+
+/* ── 1. DUAL MARQUEE (Linear / Stripe style) ─────────────────
+   Two rows, opposite directions, full-bleed edge to edge.       */
+.marquee-outer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+  padding: 14px 0;
+  /* bleed past .wrap padding to hit viewport edges */
+  margin-left:  calc(-1 * clamp(22px, 4.5vw, 90px));
+  margin-right: calc(-1 * clamp(22px, 4.5vw, 90px));
+  /* top/bottom separator lines */
+  border-top:    1px solid rgba(255,255,255,.07);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee-row {
+  display: flex;
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  animation: marqueeLeft 38s linear infinite;
+  will-change: transform;
+}
+
+.marquee-row-rev .marquee-track {
+  animation-direction: reverse;
+  animation-duration: 44s;
+}
+
+/* Pause on hover */
+.marquee-outer:hover .marquee-track { animation-play-state: paused; }
+
+@keyframes marqueeLeft {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-item {
+  font-family: Fredoka, Inter, ui-sans-serif, system-ui;
+  font-weight: 700;
+  font-size: clamp(13px, 1.3vw, 17px);
+  color: rgba(255,255,255,.42);
+  letter-spacing: .5px;
+  flex-shrink: 0;
+  transition: color .22s ease;
+}
+
+.marquee-item:hover { color: rgba(255,255,255,.92); }
+
+.marquee-sep {
+  color: var(--green);
+  font-size: 16px;
+  opacity: .5;
+  flex-shrink: 0;
+}
+
+
+/* ── 2. HEADING WIPE REVEAL (agency / Linear style) ──────────
+   A solid colored block slides across heading text left→right.
+   Text is hidden behind it, revealed as the block exits right.  */
+
+.wipe-outer {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.wipe-fill {
+  position: absolute;
+  inset: -4px;               /* slightly oversize to avoid hairline gaps */
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: left center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.wipe-text {
+  display: block;
+  opacity: 0;
+}
+
+/* Triggered by JS adding .wipe-active to .wipe-outer */
+.wipe-outer.wipe-active .wipe-fill {
+  animation: wipeThrough .80s cubic-bezier(.86,0,.07,1) forwards;
+}
+.wipe-outer.wipe-active .wipe-text {
+  animation: wipeTextReveal .80s forwards;
+}
+
+@keyframes wipeThrough {
+  0%      { transform: scaleX(0); transform-origin: left center; }
+  48%     { transform: scaleX(1); transform-origin: left center; }
+  50%     { transform: scaleX(1); transform-origin: right center; }
+  100%    { transform: scaleX(0); transform-origin: right center; }
+}
+
+@keyframes wipeTextReveal {
+  0%,  47% { opacity: 0; }
+  48%, 100% { opacity: 1; }
+}
+
+
+/* ── 3. SPLIT-TEXT WORD REVEAL (every Awwwards site) ─────────
+   Each word clips upward into view with skew. Stagger via JS.   */
+
+.split-reveal .word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: .06em;
+  /* space words correctly */
+  margin-right: .22em;
+}
+
+.split-reveal .word {
+  display: inline-block;
+  transform: translateY(115%) skewY(7deg);
+  opacity: 0;
+  transition:
+    transform .72s cubic-bezier(.2,.8,.2,1),
+    opacity   .72s ease;
+  will-change: transform, opacity;
+}
+
+.split-reveal.sr-in .word {
+  transform: translateY(0) skewY(0deg);
+  opacity: 1;
+}
+
+
+/* ── 4. SPINNING CONIC GRADIENT BORDER on cards ──────────────
+   Requires @property (Chrome/Edge/Safari 16.4+). No-op on FF.   */
+
+@property --bd-a {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spinBorder { to { --bd-a: 360deg; } }
+
+.item2 { isolation: isolate; }
+
+.item2::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 27px;
+  background: conic-gradient(
+    from var(--bd-a),
+    transparent  0deg,
+    rgba(184,255,90,.55)  45deg,
+    rgba(106,99,255,.45)  90deg,
+    rgba(255,106,61,.40) 135deg,
+    transparent          180deg
+  );
+  --bd-a: 0deg;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity .30s ease;
+  animation: spinBorder 3.5s linear infinite paused;
+}
+
+.item2:hover::after {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+
+/* ── 5. BUBBLE POP-IN ENTRANCE ───────────────────────────────
+   Bubbles are hidden until tools section enters viewport,
+   then each pops in with bounce + stagger (JS sets delays).      */
+
+.ebubble {
+  opacity: 0;
+}
+
+@keyframes bubblePop {
+  0%   { opacity: 0; scale: 0.15; filter: blur(8px); }
+  60%  {             scale: 1.18; filter: blur(0);   }
+  80%  {             scale: 0.94; }
+  100% { opacity: 1; scale: 1;    }
+}
+
+.ebubble.popped {
+  /* JS sets animation-delay per bubble */
+  animation:
+    bubblePop .70s cubic-bezier(.2,.8,.2,1) both,
+    floaty var(--float-dur) ease-in-out infinite var(--float-delay);
+}
+
+
+/* ── 6. AMBIENT SPOTLIGHT (Vercel / Linear bg glow) ─────────
+   #spotlight: very large soft blob that follows mouse slowly.    */
+
+#spotlight {
+  position: fixed;
+  width: 800px;
+  height: 800px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+  background: radial-gradient(
+    circle,
+    rgba(184,255,90,.055) 0%,
+    rgba(106,99,255,.030) 35%,
+    transparent 65%
+  );
+  transform: translate(-400px, -400px);  /* off-screen until JS moves it */
+}
+
+
+/* ── 7. HL BADGE MICRO-GLITCH on hover ───────────────────────
+   The colored .hl badges in headings glitch briefly on hover.   */
+
+@keyframes hlGlitch {
+  0%   { transform: translate(0)      skewX(0);    filter: none; }
+  14%  { transform: translate(-4px,1px) skewX(-5deg); filter: hue-rotate(80deg) saturate(6); }
+  28%  { transform: translate(4px,-1px) skewX(5deg);  filter: hue-rotate(-80deg) saturate(6); }
+  42%  { transform: translate(-2px,0) skewX(0);    filter: none; }
+  57%  { transform: translate(2px,0); }
+  71%  { transform: translate(-1px,0); }
+  100% { transform: translate(0);      filter: none; }
+}
+
+.hl { cursor: default; }
+.hl:hover { animation: hlGlitch .42s cubic-bezier(.2,.8,.2,1) both; }
+
+
+/* ── 8. SECTION SCAN LINE ────────────────────────────────────
+   A thin bright line sweeps top → bottom through the hero.      */
+
+.hero { position: relative; overflow: hidden; }
+
+.hero::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(184,255,90,.5) 40%, rgba(106,99,255,.4) 60%, transparent 100%);
+  top: 0;
+  pointer-events: none;
+  z-index: 3;
+  animation: scanLine 7s ease-in-out infinite 1.2s;
+}
+
+@keyframes scanLine {
+  0%   { top:   0%; opacity: 0; }
+  4%   { opacity: .9; }
+  96%  { opacity: .9; }
+  100% { top: 100%; opacity: 0; }
+}

@@ -935,5 +935,161 @@
 })();
 
 
+// ================================================================
+//  BIG ANIMATIONS v3
+//  A. Split-text word reveal
+//  B. Heading wipe reveal
+//  C. Bubble pop-in entrance
+//  D. Ambient spotlight
+// ================================================================
+
+// A — Split-text word reveal
+// Wraps every word in .hero-sub, .about-lead, .what-text in a
+// clip container, then slides words up on scroll intersection.
+(function () {
+  var SEL = '.hero-sub, .about-lead, .what-text';
+  var els = document.querySelectorAll(SEL);
+  if (!els.length) return;
+
+  els.forEach(function (el) {
+    // already processed
+    if (el.dataset.split) return;
+    el.dataset.split = '1';
+
+    var raw = el.innerHTML;
+    // Split on spaces, preserve HTML tags intact (don't split inside tags)
+    // Simple approach: split text nodes only
+    var html = '';
+    raw.split(/(\s+)/).forEach(function (chunk) {
+      if (!chunk.trim()) {
+        html += chunk; // whitespace between words
+        return;
+      }
+      // Don't wrap HTML tags themselves
+      if (chunk[0] === '<') { html += chunk; return; }
+      html += '<span class="word-wrap"><span class="word">' + chunk + '</span></span>';
+    });
+    el.innerHTML = html;
+    el.classList.add('split-reveal');
+
+    // Stagger delay per word
+    var words = el.querySelectorAll('.word');
+    words.forEach(function (w, i) {
+      w.style.transitionDelay = (i * 0.045) + 's';
+    });
+  });
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('sr-in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.split-reveal').forEach(function (el) {
+    io.observe(el);
+  });
+})();
+
+
+// B — Heading wipe reveal
+// Wraps .panel-title, .what-title, .tools-wall-title in a
+// container, inserts a green fill block, animates on scroll.
+(function () {
+  var SEL = '.panel-title, .what-title, .tools-wall-title';
+  var els = document.querySelectorAll(SEL);
+  if (!els.length) return;
+
+  els.forEach(function (h) {
+    if (h.dataset.wiped) return;
+    h.dataset.wiped = '1';
+
+    // Build wrapper
+    var outer = document.createElement('div');
+    outer.className = 'wipe-outer';
+
+    var fill = document.createElement('div');
+    fill.className = 'wipe-fill';
+
+    // Wrap heading content
+    h.parentNode.insertBefore(outer, h);
+    outer.appendChild(fill);
+    outer.appendChild(h);
+    h.classList.add('wipe-text');
+  });
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('wipe-active');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.wipe-outer').forEach(function (w) {
+    io.observe(w);
+  });
+})();
+
+
+// C — Bubble pop-in entrance
+// All bubbles are opacity:0 via CSS. When the tools section enters
+// the viewport, each bubble gets class .popped with a stagger delay.
+(function () {
+  var stage = document.querySelector('.emoji-stage');
+  if (!stage) return;
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+
+      var bubbles = Array.from(stage.querySelectorAll('.ebubble'));
+      // Shuffle so they don't pop in a predictable order
+      bubbles.sort(function () { return Math.random() - 0.5; });
+
+      bubbles.forEach(function (b, i) {
+        b.style.animationDelay = (i * 0.065) + 's';
+        setTimeout(function () {
+          b.classList.add('popped');
+        }, i * 65);
+      });
+    });
+  }, { threshold: 0.2 });
+
+  io.observe(stage);
+})();
+
+
+// D — Ambient spotlight: slow warm blob follows mouse
+// Creates a large soft radial gradient that drifts behind cursor.
+// Positioned with transform only, lerp factor 0.025 = very dreamy.
+(function () {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  var sl = document.createElement('div');
+  sl.id = 'spotlight';
+  document.body.appendChild(sl);
+
+  var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  var sx = mx, sy = my;
+  var HW = 400; // half of 800px
+
+  window.addEventListener('mousemove', function (e) {
+    mx = e.clientX; my = e.clientY;
+  }, { passive: true });
+
+  (function loop() {
+    sx += (mx - sx) * 0.032;
+    sy += (my - sy) * 0.032;
+    sl.style.transform = 'translate(' + ((sx - HW) | 0) + 'px,' + ((sy - HW) | 0) + 'px)';
+    requestAnimationFrame(loop);
+  })();
+})();
+
+
 
 
