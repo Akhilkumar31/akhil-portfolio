@@ -1733,3 +1733,159 @@ a:hover {
     opacity: .45;
   }
 }
+
+
+/* ============================================================
+   WORLD-CLASS ANIMATION PACK
+   Cursor · Bubbles · Parallax · Counters · Magnetic · Nav
+   ============================================================ */
+
+/* --- Page entry fade-in --- */
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+body { animation: pageIn .6s cubic-bezier(.2,.8,.2,1) both; }
+
+/* --- 1. Custom cursor --- */
+#cursor-dot {
+  position: fixed;
+  width: 7px; height: 7px;
+  background: #fff;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  will-change: left, top;
+  transition: width .15s ease, height .15s ease;
+}
+
+#cursor-ring {
+  position: fixed;
+  width: 40px; height: 40px;
+  border: 2px solid rgba(255,255,255,.50);
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 9997;
+  transform: translate(-50%, -50%);
+  will-change: left, top;
+  transition:
+    width  .28s cubic-bezier(.2,.8,.2,1),
+    height .28s cubic-bezier(.2,.8,.2,1),
+    border-color .28s ease,
+    background   .28s ease;
+}
+
+body.cur-hover #cursor-ring {
+  width: 60px; height: 60px;
+  border-color: var(--green);
+  background: rgba(184,255,90,.07);
+}
+body.cur-hover #cursor-dot { width: 3px; height: 3px; }
+body.cur-drag  #cursor-ring {
+  width: 72px; height: 72px;
+  border-color: var(--orange);
+  border-width: 3px;
+}
+body.has-cursor * { cursor: none !important; }
+
+/* --- 2. Cursor ambient glow blob --- */
+#cursor-glow {
+  position: fixed;
+  width: 520px; height: 520px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(184,255,90,.045) 0%, transparent 65%);
+  will-change: left, top;
+}
+
+/* --- 3. Bubble stagger CSS vars + hover glow --- */
+.ebubble {
+  --float-delay: 0s;
+  --float-dur: 4.6s;
+  animation-delay:    var(--float-delay) !important;
+  animation-duration: var(--float-dur)   !important;
+  transition: scale .20s cubic-bezier(.2,.8,.2,1), box-shadow .20s ease;
+}
+
+/* `scale` as individual CSS property composes with `transform` from floaty animation */
+.ebubble:not(.dragging):hover {
+  scale: 1.20;
+  box-shadow:
+    0 24px 0 rgba(0,0,0,.38),
+    0 40px 80px rgba(0,0,0,.55),
+    0 0 0 5px rgba(184,255,90,.38),
+    0 0 30px rgba(184,255,90,.24);
+  z-index: 10;
+}
+
+/* --- 4. Contact CTA hover lift --- */
+.contact-cta {
+  transition:
+    transform   .25s cubic-bezier(.2,.8,.2,1),
+    box-shadow  .25s ease,
+    background  .25s ease,
+    outline-color .25s ease;
+}
+.contact-cta:hover {
+  transform: translateY(-5px);
+  background: rgba(184,255,90,.16);
+  box-shadow: 0 20px 0 rgba(0,0,0,.38), 0 0 40px rgba(184,255,90,.16);
+  outline-color: rgba(184,255,90,.28);
+}
+
+/* --- 5. Nav link animated underline --- */
+.nav2-links a:not(.active) {
+  position: relative;
+  transition: opacity .18s ease;
+}
+.nav2-links a:not(.active)::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -4px;
+  height: 3px;
+  border-radius: 999px;
+  background: #111;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .22s cubic-bezier(.2,.8,.2,1);
+}
+.nav2-links a:not(.active):hover::after { transform: scaleX(1); }
+.nav2-links a:not(.active):hover { opacity: 1; }
+
+/* --- 6. Magnetic button base (no-op, JS does the work) --- */
+.pill {
+  transition: transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s ease;
+}
+.pill:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 0 rgba(0,0,0,.36), 0 0 28px rgba(255,106,61,.20);
+}
+
+/* --- 7. Hero parallax layer hints --- */
+.hero-left  { will-change: transform; transition: transform .07s linear; }
+.hero-right { will-change: transform; transition: transform .07s linear; }
+.hero .tag  { will-change: transform; transition: transform .05s linear; }
+
+/* --- 8. Counter pop flash on complete --- */
+@keyframes cntPop {
+  0%   { color: var(--green); scale: 1.28; }
+  100% { color: inherit; scale: 1; }
+}
+.count-pop { animation: cntPop .45s cubic-bezier(.2,.8,.2,1) both; }
+
+/* --- 9. item2 card hover — upgrade existing rule for consistency --- */
+.item2 {
+  transition:
+    transform   .32s cubic-bezier(.2,.8,.2,1),
+    box-shadow  .32s ease,
+    outline-color .32s ease;
+}
+.item2:hover {
+  transform: translateY(-5px) rotateX(1deg);
+  box-shadow: 0 20px 0 rgba(0,0,0,.40), 0 44px 120px rgba(0,0,0,.60);
+  outline-color: rgba(184,255,90,.22);
+}

@@ -47,6 +47,26 @@
       el.style.minWidth = Math.max(190, longest.length * 11) + "px";
     }
 
+    const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@!&';
+    function scrambleTo(target) {
+      const len = target.length;
+      let f = 0;
+      const frames = 18;
+      (function tick() {
+        f++;
+        const settled = Math.floor((f / frames) * len);
+        let out = '';
+        for (let c = 0; c < len; c++) {
+          out += c < settled
+            ? target[c]
+            : (target[c] === ' ' ? ' ' : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]);
+        }
+        el.textContent = out;
+        if (f < frames) requestAnimationFrame(tick);
+        else el.textContent = target;
+      })();
+    }
+
     let i = 0;
     el.textContent = words[i];
 
@@ -54,8 +74,8 @@
       i = (i + 1) % words.length;
       el.classList.remove("enter");
       void el.offsetWidth;
-      el.textContent = words[i];
       el.classList.add("enter");
+      scrambleTo(words[i]);
     }, interval);
   }
 
@@ -647,6 +667,134 @@
   );
 
   els.forEach((el) => io.observe(el));
+})();
+
+
+// ============================================================
+//  WORLD-CLASS ANIMATION PACK
+//  1. Staggered bubble float  2. Custom cursor + spring ring
+//  3. Magnetic buttons        4. Hero mouse parallax
+//  5. Kinetic counters
+// ============================================================
+
+// 1 — Staggered bubble float timing
+// Each bubble gets a unique delay + duration so they never bob in sync
+(function () {
+  document.querySelectorAll('.ebubble').forEach(function (b, i) {
+    b.style.setProperty('--float-delay', '-' + ((i * 0.38) % 5.4).toFixed(2) + 's');
+    b.style.setProperty('--float-dur',         (3.5 + (i % 7) * 0.42).toFixed(2) + 's');
+  });
+})();
+
+// 2 — Custom cursor with spring-lag ring (desktop only)
+(function () {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  var dot  = document.createElement('div'); dot.id  = 'cursor-dot';
+  var ring = document.createElement('div'); ring.id = 'cursor-ring';
+  var glow = document.createElement('div'); glow.id = 'cursor-glow';
+  document.body.appendChild(dot);
+  document.body.appendChild(ring);
+  document.body.appendChild(glow);
+  document.body.classList.add('has-cursor');
+
+  var mx = -300, my = -300, rx = -300, ry = -300, gx = -300, gy = -300;
+
+  document.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; });
+  document.addEventListener('mouseleave', function () { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+  document.addEventListener('mouseenter', function () { dot.style.opacity = ''; ring.style.opacity = ''; });
+
+  (function loop() {
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+    rx += (mx - rx) * 0.13; ry += (my - ry) * 0.13;
+    gx += (mx - gx) * 0.055; gy += (my - gy) * 0.055;
+    ring.style.left = rx.toFixed(1) + 'px'; ring.style.top = ry.toFixed(1) + 'px';
+    glow.style.left = gx.toFixed(1) + 'px'; glow.style.top = gy.toFixed(1) + 'px';
+    requestAnimationFrame(loop);
+  })();
+
+  var hovSel = 'a, button, .ebubble, .chip, .pill, .contact-cta, .proj-nav, .cert-card, .what-row';
+  document.querySelectorAll(hovSel).forEach(function (el) {
+    el.addEventListener('mouseenter', function () { document.body.classList.add('cur-hover'); });
+    el.addEventListener('mouseleave', function () { document.body.classList.remove('cur-hover'); });
+  });
+
+  document.querySelectorAll('.ebubble').forEach(function (b) {
+    b.addEventListener('pointerdown', function () { document.body.classList.add('cur-drag'); });
+  });
+  window.addEventListener('pointerup', function () { document.body.classList.remove('cur-drag'); });
+})();
+
+// 3 — Magnetic buttons: pill / CTA / arrows drift toward cursor
+(function () {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  document.querySelectorAll('.pill, .contact-cta, .project-btn, .proj-nav').forEach(function (el) {
+    el.addEventListener('mousemove', function (e) {
+      var r  = el.getBoundingClientRect();
+      var dx = (e.clientX - (r.left + r.width  / 2)) * 0.30;
+      var dy = (e.clientY - (r.top  + r.height / 2)) * 0.30;
+      el.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+    });
+    el.addEventListener('mouseleave', function () { el.style.transform = ''; });
+  });
+})();
+
+// 4 — Hero mouse parallax: portrait + text layers move at different depths
+(function () {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+  var hero = document.querySelector('.hero');
+  if (!hero) return;
+
+  var left  = hero.querySelector('.hero-left');
+  var right = hero.querySelector('.hero-right');
+  var tag   = hero.querySelector('.tag');
+
+  hero.addEventListener('mousemove', function (e) {
+    var r  = hero.getBoundingClientRect();
+    var dx = (e.clientX - r.left - r.width  / 2) / r.width;
+    var dy = (e.clientY - r.top  - r.height / 2) / r.height;
+    if (left)  left.style.transform  = 'translate(' + (dx * -22) + 'px,' + (dy * -13) + 'px)';
+    if (right) right.style.transform = 'translate(' + (dx *  13) + 'px,' + (dy *   8) + 'px)';
+    if (tag)   tag.style.transform   = 'translate(' + (dx *  18) + 'px,' + (dy *  11) + 'px) rotate(' + (dx * 1.8) + 'deg)';
+  });
+  hero.addEventListener('mouseleave', function () {
+    if (left)  left.style.transform  = '';
+    if (right) right.style.transform = '';
+    if (tag)   tag.style.transform   = '';
+  });
+})();
+
+// 5 — Kinetic counters: numbers count up from 0 when scrolled into view
+(function () {
+  var strongs = document.querySelectorAll('.item2 strong, .desc strong');
+  if (!strongs.length) return;
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      var orig = e.target.textContent.trim();
+      // only match bare numbers: 25%, 28%, 30%, 6+, 10+, 40%, 9 etc.
+      var m = orig.match(/^(\d+)(%|\+)?$/);
+      if (!m) return;
+      var target = parseInt(m[1], 10);
+      var suffix = m[2] || '';
+      if (target < 2 || target > 9999) return;
+      var dur = Math.min(1400, 500 + target * 3);
+      var start = performance.now();
+      var el = e.target;
+      (function tick(now) {
+        var p = Math.min((now - start) / dur, 1);
+        var v = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(v * target) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+        else { el.textContent = orig; el.classList.add('count-pop'); }
+      })(start);
+    });
+  }, { threshold: 0.6 });
+
+  strongs.forEach(function (s) { io.observe(s); });
 })();
 
 
