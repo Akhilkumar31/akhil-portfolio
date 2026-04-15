@@ -16,6 +16,15 @@
 
 <body>
 
+  <!-- Film grain, page transition, scroll bar — injected by JS but need containers -->
+  <canvas id="grain-canvas" aria-hidden="true"></canvas>
+  <div id="page-trans" aria-hidden="true">
+    <div class="pt-panel"></div>
+    <div class="pt-panel"></div>
+    <div class="pt-panel"></div>
+  </div>
+  <div id="scroll-bar" aria-hidden="true"></div>
+
   <div class="nav2">
     <div class="nav2-inner">
       <a class="nav2-logo" href="index.html" aria-label="Home">
@@ -118,6 +127,28 @@
           <span class="marquee-item">C++17</span><span class="marquee-sep">·</span>
           <span class="marquee-item">GitHub Actions</span><span class="marquee-sep">·</span>
         </div>
+      </div>
+    </div>
+
+    <!-- Scroll-driven oversized text -->
+    <div class="scroll-text-outer" id="scrollText" aria-hidden="true">
+      <div class="scroll-text-row" id="stRow1">
+        <span>FULL STACK</span><span class="accent">·</span>
+        <span>REACT</span><span class="accent">·</span>
+        <span>SPRING BOOT</span><span class="accent">·</span>
+        <span>KAFKA</span><span class="accent">·</span>
+        <span>FULL STACK</span><span class="accent">·</span>
+        <span>REACT</span><span class="accent">·</span>
+        <span>SPRING BOOT</span><span class="accent">·</span>
+      </div>
+      <div class="scroll-text-row" id="stRow2">
+        <span class="filled">TYPESCRIPT</span><span class="accent">·</span>
+        <span class="filled">AWS</span><span class="accent">·</span>
+        <span class="filled">KUBERNETES</span><span class="accent">·</span>
+        <span class="filled">MICROSERVICES</span><span class="accent">·</span>
+        <span class="filled">TYPESCRIPT</span><span class="accent">·</span>
+        <span class="filled">AWS</span><span class="accent">·</span>
+        <span class="filled">KUBERNETES</span><span class="accent">·</span>
       </div>
     </div>
 

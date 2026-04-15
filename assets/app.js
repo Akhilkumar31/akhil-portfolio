@@ -1065,8 +1065,6 @@
 
 
 // D — Ambient spotlight: slow warm blob follows mouse
-// Creates a large soft radial gradient that drifts behind cursor.
-// Positioned with transform only, lerp factor 0.025 = very dreamy.
 (function () {
   if (window.matchMedia('(pointer: coarse)').matches) return;
 
@@ -1076,7 +1074,7 @@
 
   var mx = window.innerWidth / 2, my = window.innerHeight / 2;
   var sx = mx, sy = my;
-  var HW = 400; // half of 800px
+  var HW = 400;
 
   window.addEventListener('mousemove', function (e) {
     mx = e.clientX; my = e.clientY;
@@ -1088,6 +1086,139 @@
     sl.style.transform = 'translate(' + ((sx - HW) | 0) + 'px,' + ((sy - HW) | 0) + 'px)';
     requestAnimationFrame(loop);
   })();
+})();
+
+
+// ================================================================
+//  NEXT-LEVEL ANIMATIONS
+//  E. Film grain canvas overlay
+//  F. Scroll-driven oversized text
+//  G. Page transition wipe
+//  H. Scroll progress bar
+// ================================================================
+
+// E — Film grain: animated noise canvas overlay
+// Renders a fresh random noise pattern every 2 frames (~30fps)
+// giving the tactile premium texture seen on Basement, Linear, etc.
+(function () {
+  var canvas = document.getElementById('grain-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H, imageData, data;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    imageData = ctx.createImageData(W, H);
+    data = imageData.data;
+  }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  var frame = 0;
+  (function loop() {
+    frame++;
+    // only redraw every 2nd frame — 30fps grain is indistinguishable from 60fps
+    if (frame % 2 === 0) {
+      // Fill entire buffer with random grey pixels at full opacity
+      // Browser will apply CSS opacity: .038 + mix-blend-mode: overlay
+      for (var i = 0; i < data.length; i += 4) {
+        var v = (Math.random() * 255) | 0;
+        data[i]     = v;
+        data[i + 1] = v;
+        data[i + 2] = v;
+        data[i + 3] = 255;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
+    requestAnimationFrame(loop);
+  })();
+})();
+
+
+// F — Scroll-driven oversized text
+// Row 1 moves left as you scroll, row 2 moves right.
+// Velocity is proportional to scroll position — pure CSS transform.
+(function () {
+  var row1 = document.getElementById('stRow1');
+  var row2 = document.getElementById('stRow2');
+  if (!row1 || !row2) return;
+
+  var lastY = 0;
+  // Get the outer container's position for scroll-relative movement
+  var outer = document.getElementById('scrollText');
+
+  function update() {
+    var scrollY = window.scrollY || window.pageYOffset;
+    var outerTop = outer ? outer.getBoundingClientRect().top + scrollY : 0;
+    var rel = scrollY - outerTop;          // scroll position relative to this block
+    var shift = rel * 0.35;               // tune: bigger = faster drift
+    row1.style.transform = 'translateX(' + (-shift) + 'px)';
+    row2.style.transform = 'translateX(' + ( shift * 0.65) + 'px)';
+    lastY = scrollY;
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+
+// G — Page transition: full-screen colour wipe between pages
+// Panels sweep in on link click, hold while page loads, sweep out on arrival.
+(function () {
+  var trans = document.getElementById('page-trans');
+  if (!trans) return;
+
+  // On arrival: sweep out (page has loaded, clear the overlay)
+  function sweepOut() {
+    trans.classList.remove('pt-enter');
+    trans.classList.add('pt-exit');
+    // After animation, reset so it's invisible
+    setTimeout(function () {
+      trans.classList.remove('pt-exit');
+    }, 700);
+  }
+
+  // Trigger sweep-out once on first load
+  sweepOut();
+
+  // On nav link click: sweep in, then navigate
+  document.querySelectorAll('a[href]').forEach(function (a) {
+    var href = a.getAttribute('href');
+    // Only intercept same-origin, non-hash, non-external links
+    if (!href || href[0] === '#' || href.indexOf('://') !== -1 || href.indexOf('mailto') !== -1) return;
+    if (a.target === '_blank') return;
+
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var dest = href;
+      trans.classList.remove('pt-exit');
+      trans.classList.add('pt-enter');
+      // Navigate after panels are fully in (~0.4s)
+      setTimeout(function () {
+        window.location.href = dest;
+      }, 420);
+    });
+  });
+})();
+
+
+// H — Scroll progress bar
+// Fills from left to right as the user scrolls the page.
+(function () {
+  var bar = document.getElementById('scroll-bar');
+  if (!bar) return;
+
+  function update() {
+    var el = document.documentElement;
+    var scrolled = el.scrollTop || document.body.scrollTop;
+    var total    = el.scrollHeight - el.clientHeight;
+    var pct = total > 0 ? (scrolled / total) * 100 : 0;
+    bar.style.width = pct.toFixed(1) + '%';
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
 })();
 
 

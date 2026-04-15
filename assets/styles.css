@@ -111,8 +111,13 @@ a:hover {
     0 2px 0 rgba(0, 0, 0, .85);
 }
 
+#tools.panel {
+  min-height: 0;        /* don't force full viewport height */
+  padding: 40px 0;
+}
+
 #tools .panel-inner {
-  height: 100%;
+  height: auto;
   display: flex;
 }
 
@@ -120,14 +125,12 @@ a:hover {
   width: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
 }
 
 #tools .tools-stage.emoji-stage {
-  flex: 1;
-  /* take all remaining height */
-  min-height: 0;
-  /* allow flex child to shrink/grow */
+  flex: none;
+  min-height: clamp(280px, 30vw, 380px);
 }
 
 
@@ -645,7 +648,7 @@ a:hover {
    ========================= */
 .emoji-stage {
   position: relative;
-  min-height: clamp(320px, 42vw, 520px);
+  min-height: clamp(280px, 30vw, 380px);
   border-radius: 24px;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, .22), rgba(0, 0, 0, .55)),
@@ -690,8 +693,7 @@ a:hover {
 .tools-stage {
   position: relative;
   width: 100%;
-  min-height: 320px;
-  /* increase if you add many bubbles */
+  min-height: 0;
 }
 
 .emoji-stage {
@@ -2183,4 +2185,177 @@ body.cur-drag #cur-ring {
   4%   { opacity: .9; }
   96%  { opacity: .9; }
   100% { top: 100%; opacity: 0; }
+}
+
+
+/* ================================================================
+   NEXT-LEVEL ANIMATIONS
+   1. Film grain canvas overlay
+   2. Scroll-driven oversized horizontal text
+   3. Animated morphing gradient mesh background
+   4. Page-transition full-screen wipe
+   5. Horizontal scroll progress bar
+   ================================================================ */
+
+/* ── 1. FILM GRAIN OVERLAY (Basement Studio / Linear / every agency)
+   A canvas fixed over the entire page. JS draws animated noise on it.
+   Creates the tactile premium texture seen on top design studios.       */
+#grain-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9995;   /* above content, below cursor */
+  opacity: .038;
+  mix-blend-mode: overlay;
+}
+
+
+/* ── 2. SCROLL-DRIVEN OVERSIZED TEXT (every Awwwards winner)
+   Two rows of giant text. JS moves them left/right proportional to
+   scroll position — creates a powerful kinetic depth effect.           */
+.scroll-text-outer {
+  overflow: hidden;
+  padding: 0;
+  margin: 0 calc(-1 * clamp(22px, 4.5vw, 90px));   /* bleed full width */
+  border-top:    1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  user-select: none;
+  pointer-events: none;
+}
+
+.scroll-text-row {
+  display: flex;
+  white-space: nowrap;
+  gap: 0.4em;
+  padding: 0.08em 0;
+  will-change: transform;
+}
+
+.scroll-text-row span {
+  font-family: Fredoka, Inter, ui-sans-serif, system-ui;
+  font-weight: 900;
+  font-size: clamp(64px, 10vw, 140px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,.14);
+  flex-shrink: 0;
+}
+
+.scroll-text-row span.filled {
+  color: rgba(255,255,255,.06);
+  -webkit-text-stroke: 0;
+}
+
+.scroll-text-row .accent {
+  -webkit-text-stroke-color: var(--green);
+  opacity: .55;
+}
+
+
+/* ── 3. MORPHING GRADIENT MESH (Stripe / Vercel homepage)
+   Replaces the static body::after blobs with animated ones.
+   Three blobs pulse and drift on independent timing.                   */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -3;
+  background:
+    radial-gradient(1200px 700px at 20% 20%, rgba(184,255,90,.09), transparent 62%),
+    radial-gradient(1200px 700px at 80% 30%, rgba(106,99,255,.09), transparent 62%),
+    radial-gradient(1200px 700px at 50% 110%, rgba(255,106,61,.06), transparent 62%);
+  animation: meshDrift 14s ease-in-out infinite alternate;
+}
+
+@keyframes meshDrift {
+  0%   {
+    background:
+      radial-gradient(1200px 700px at 20% 20%, rgba(184,255,90,.09), transparent 62%),
+      radial-gradient(1200px 700px at 80% 30%, rgba(106,99,255,.09), transparent 62%),
+      radial-gradient(1200px 700px at 50% 110%, rgba(255,106,61,.06), transparent 62%);
+  }
+  33%  {
+    background:
+      radial-gradient(1100px 600px at 35% 55%, rgba(184,255,90,.10), transparent 60%),
+      radial-gradient(1300px 800px at 65% 15%, rgba(106,99,255,.08), transparent 62%),
+      radial-gradient(1000px 500px at 15% 90%, rgba(255,106,61,.07), transparent 60%);
+  }
+  66%  {
+    background:
+      radial-gradient(1300px 800px at 70% 35%, rgba(184,255,90,.07), transparent 60%),
+      radial-gradient(1000px 600px at 20% 10%, rgba(106,99,255,.11), transparent 58%),
+      radial-gradient(1200px 700px at 80% 80%, rgba(255,106,61,.06), transparent 64%);
+  }
+  100% {
+    background:
+      radial-gradient(1100px 700px at 15% 30%, rgba(184,255,90,.09), transparent 62%),
+      radial-gradient(1200px 700px at 85% 40%, rgba(106,99,255,.08), transparent 60%),
+      radial-gradient(1300px 800px at 45% 95%, rgba(255,106,61,.07), transparent 64%);
+  }
+}
+
+
+/* ── 4. PAGE TRANSITION — full-screen coloured wipe (many agencies)
+   An overlay div slides in from bottom, holds, then retracts upward.
+   JS triggers it on every nav link click before navigating.           */
+#page-trans {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.pt-panel {
+  flex: 1;
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  will-change: transform;
+}
+
+.pt-panel:nth-child(1) { background: var(--green);  }
+.pt-panel:nth-child(2) { background: var(--purple); }
+.pt-panel:nth-child(3) { background: var(--orange); }
+
+/* entering: panels sweep in bottom→top staggered */
+@keyframes ptIn {
+  from { transform: scaleY(0); transform-origin: bottom center; }
+  to   { transform: scaleY(1); transform-origin: bottom center; }
+}
+/* leaving: panels sweep out top→bottom staggered */
+@keyframes ptOut {
+  from { transform: scaleY(1); transform-origin: top center; }
+  to   { transform: scaleY(0); transform-origin: top center; }
+}
+
+#page-trans.pt-enter .pt-panel {
+  animation: ptIn .28s cubic-bezier(.86,0,.07,1) both;
+}
+#page-trans.pt-enter .pt-panel:nth-child(1) { animation-delay: 0s; }
+#page-trans.pt-enter .pt-panel:nth-child(2) { animation-delay: .045s; }
+#page-trans.pt-enter .pt-panel:nth-child(3) { animation-delay: .09s; }
+
+#page-trans.pt-exit .pt-panel {
+  animation: ptOut .28s cubic-bezier(.86,0,.07,1) both;
+}
+#page-trans.pt-exit .pt-panel:nth-child(1) { animation-delay: .09s; }
+#page-trans.pt-exit .pt-panel:nth-child(2) { animation-delay: .045s; }
+#page-trans.pt-exit .pt-panel:nth-child(3) { animation-delay: 0s; }
+
+
+/* ── 5. SCROLL PROGRESS BAR (thin line at top, fills as you scroll) */
+#scroll-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  z-index: 99998;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--green) 0%, var(--purple) 50%, var(--orange) 100%);
+  box-shadow: 0 0 10px rgba(184,255,90,.6);
+  transition: width .08s linear;
 }
