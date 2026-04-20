@@ -58,7 +58,7 @@
         </h1>
 
         <p class="hero-sub">
-          I’ve shipped end-to-end features across React/TypeScript frontends and Java/Spring Boot microservices at Informatica and Wing Communications—improving CI stability, reducing latency, and building self-serve onboarding flows.
+          I’ve shipped end-to-end features across Angular/React frontends and Java/Spring Boot microservices at MUFG, Quest Diagnostics, Informatica, and Bharti Airtel—reducing latency, decoupling distributed systems, and hardening production deployments on AWS and Azure.
         </p>
 
         <div class="hero-links" style="margin-top: 14px;">
@@ -72,11 +72,11 @@
             <div class="title">Impact highlights</div>
             <div class="desc" style="margin-top:10px;">
               <ul style="margin:0; padding-left:18px; line-height:1.85;">
-                <li>Shipped self-serve UI in <strong>React.js + TypeScript</strong> (Tailwind CSS) at Informatica, giving admins control over <strong>10+</strong> microservice configs and eliminating a manual ops touchpoint entirely.</li>
-                <li>Cut API latency <strong>25%</strong> on Java/Spring Boot metadata microservices via request-flow refactors and in-memory caching; issues surfaced through React performance profiling before backend investigation.</li>
-                <li>Reduced MySQL metadata lookup time from <strong>120ms → 85ms</strong> by rewriting N+1 queries, adding composite indexes, and eliminating full-table scans—verified under load via Prometheus.</li>
-                <li>Eliminated synchronous timeout failures at peak load by decoupling metadata sync via <strong>Apache Kafka</strong>; reduced direct coupling across <strong>6+</strong> frontend-triggering consumers.</li>
-                <li>Shipped three end-to-end onboarding flows at Wing Communications, cutting activation from <strong>2–3 days → under 4 hours</strong> and eliminating <strong>15 manual ops interventions/week</strong>.</li>
+                <li>Rewrote PostgreSQL queries with composite indexing + Redis caching at <strong>MUFG</strong>; cut p95 read latency on the most frequently hit lookup path by over <strong>30%</strong>.</li>
+                <li>Replaced legacy JSP interface at <strong>Quest Diagnostics</strong> with React.js + TypeScript portal serving 500+ clinical users, cutting page load time from <strong>~4s → under 1.5s</strong>.</li>
+                <li>Delivered <strong>GraphQL</strong> query layer at Quest Diagnostics, eliminating 5 over-fetching REST endpoints and reducing average payload size for frontend clients.</li>
+                <li>Migrated fraud signal aggregation to <strong>Kafka</strong> event-driven pipeline at MUFG, decoupling 3 downstream consumers and eliminating timeout failures under peak load.</li>
+                <li>Built IDMC metadata config UI in <strong>React.js + TypeScript</strong> at Informatica, giving admins self-serve control over 8+ microservice configs and eliminating a manual ops touchpoint.</li>
               </ul>
             </div>
           </div>
@@ -92,9 +92,57 @@
 
         <div class="list2">
 
+          <!-- MUFG -->
           <div class="item2">
-            <div class="title">Informatica — Software Engineer</div>
-            <div class="meta">Sep 2022 – Dec 2023 · React · TypeScript · Java · Spring Boot · Kafka · Kubernetes/EKS · MySQL · gRPC · Prometheus</div>
+            <div class="title">MUFG — Java Full Stack Developer</div>
+            <div class="meta">Dec 2025 – Present · Jersey City, NJ · Java 21 · Spring Boot 3.x · Angular · GraphQL · Kafka · PostgreSQL · Redis · AWS EKS · Terraform · Prometheus</div>
+
+            <div class="desc" style="margin-top:10px;">
+              <span class="hl hl-green" style="font-size:14px; box-shadow:none; border-width:3px;">Fraud Detection</span>
+              <span class="hl hl-purple" style="font-size:14px; box-shadow:none; border-width:3px;">Event-Driven</span>
+              <span class="hl hl-orange" style="font-size:14px; box-shadow:none; border-width:3px;">Cloud-Native</span>
+            </div>
+
+            <div class="desc" style="margin-top:12px;">
+              <ul style="margin:0; padding-left:18px; line-height:1.85;">
+                <li>Extended fraud detection microservices in <strong>Java 21/Spring Boot 3.x</strong> handling high-volume daily transaction flows; delivered new anomaly scoring rules targeting false positive alerts within the first 60 days.</li>
+                <li>Built <strong>Angular</strong> dashboard for fraud ops teams consuming GraphQL APIs; surfaced contextual transaction metadata inline, cutting the number of secondary system lookups analysts needed per case.</li>
+                <li>Migrated synchronous fraud signal aggregation to a <strong>Kafka</strong> event-driven pipeline, decoupling 3 downstream consumers and eliminating timeout failures blocking transaction approval workflows under peak load.</li>
+                <li>Hardened financial API security with <strong>OAuth 2.0, JWT, and Spring Security</strong>; implemented LDAP-backed RBAC across 2 internal portals with no critical findings in subsequent security review.</li>
+                <li>Rewrote slow PostgreSQL queries on high-volume transaction tables with composite indexing and <strong>Redis caching</strong>; cut p95 read latency on the most frequently hit lookup path by over <strong>30%</strong>.</li>
+                <li>Deployed fraud microservices on <strong>AWS EKS</strong> with Terraform-provisioned infrastructure; configured HPA and liveness/readiness probes to stabilize pod restarts during market-hours traffic spikes.</li>
+                <li>Instrumented services with <strong>Prometheus/Grafana</strong>; set up alerting rules that reduced mean detection time for pipeline degradation from ~15 min to under 6 min.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Quest Diagnostics -->
+          <div class="item2">
+            <div class="title">Quest Diagnostics — Java Full Stack Developer</div>
+            <div class="meta">Jan 2025 – Nov 2025 · Secaucus, NJ · Java 17 · Spring Boot · React.js · TypeScript · GraphQL · RabbitMQ · Oracle DB · Redis · Azure AKS · Terraform</div>
+
+            <div class="desc" style="margin-top:10px;">
+              <span class="hl hl-green" style="font-size:14px; box-shadow:none; border-width:3px;">Full Stack</span>
+              <span class="hl hl-purple" style="font-size:14px; box-shadow:none; border-width:3px;">GraphQL</span>
+              <span class="hl hl-orange" style="font-size:14px; box-shadow:none; border-width:3px;">Azure</span>
+            </div>
+
+            <div class="desc" style="margin-top:12px;">
+              <ul style="margin:0; padding-left:18px; line-height:1.85;">
+                <li>Built <strong>React.js + TypeScript</strong> lab reporting portal serving 500+ clinical users; replaced legacy JSP interface, cutting page load time from <strong>~4s → under 1.5s</strong> through code splitting and API response caching.</li>
+                <li>Developed <strong>Java 17/Spring Boot</strong> patient data microservices behind API Gateway; delivered GraphQL query layer that eliminated 5 over-fetching REST endpoints and reduced average payload size for frontend clients.</li>
+                <li>Replaced synchronous lab result distribution with <strong>RabbitMQ + Saga pattern</strong>; decoupled 4 downstream services (notifications, report generation, billing) and eliminated distributed transaction failures under concurrent load.</li>
+                <li>Reduced Oracle DB diagnostic record lookup from <strong>~160ms → ~90ms</strong> via JPA query optimization, targeted indexing, and Redis cache layer on frequently accessed patient metadata.</li>
+                <li>Deployed services on <strong>Azure AKS</strong> using Docker + Kubernetes + Helm with Terraform-provisioned infrastructure; enabled zero-downtime rolling deployments across dev/staging/prod.</li>
+                <li>Cut CI/CD regression surface by building <strong>JUnit 5 + Mockito</strong> unit tests and Cypress E2E tests covering 6 critical lab ordering workflows; failures caught in PR builds via GitHub Actions + Azure DevOps.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Informatica -->
+          <div class="item2">
+            <div class="title">Informatica (Client: Citco) — Java Full Stack Developer</div>
+            <div class="meta">Sep 2022 – Dec 2023 · Hyderabad, India · React.js · TypeScript · Java · Spring Boot · Kafka · gRPC · MySQL · Amazon EKS · Prometheus</div>
 
             <div class="desc" style="margin-top:10px;">
               <span class="hl hl-green" style="font-size:14px; box-shadow:none; border-width:3px;">Full Stack</span>
@@ -104,38 +152,40 @@
 
             <div class="desc" style="margin-top:12px;">
               <ul style="margin:0; padding-left:18px; line-height:1.85;">
-                <li>Built the IDMC metadata config UI in <strong>React.js + TypeScript</strong> (Tailwind CSS), giving admins a self-serve interface for 10+ microservice configs and eliminating a manual ops touchpoint entirely.</li>
-                <li>Cut service latency <strong>25%</strong> on Java/Spring Boot metadata microservices by refactoring request flow and adding targeted in-memory caching on hot paths; issues surfaced through React performance profiling before backend investigation.</li>
-                <li>Exposed metadata APIs over <strong>gRPC</strong> with Protobuf contracts; built TypeScript client layer consumed by the React frontend, ensuring type-safe contracts between UI and <strong>4+</strong> downstream services.</li>
-                <li>Decoupled metadata sync via Apache Kafka topics, eliminating synchronous timeout failures at peak provisioning load and reducing direct coupling across <strong>6+</strong> frontend-triggering consumers.</li>
-                <li>Deployed and managed cloud-native microservices on <strong>Amazon EKS</strong>; configured liveness/readiness probes and HPA, reducing pod restart incidents <strong>30%</strong> during traffic spikes.</li>
-                <li>Reduced MySQL metadata lookup time from <strong>120ms → 85ms</strong> by rewriting N+1 queries, adding composite indexes, and eliminating full-table scans—verified under load via Prometheus.</li>
-                <li>Cut CI/CD regression rate <strong>28%</strong> by authoring JUnit + E2E tests covering <strong>9 onboarding workflows</strong> (Jenkins) and Cypress tests for critical UI flows; failures caught in PR builds before staging.</li>
+                <li>Built the IDMC metadata config UI in <strong>React.js + TypeScript</strong> (Tailwind CSS), giving admins a self-serve interface for 8+ microservice configs and eliminating a manual ops touchpoint that previously required engineering involvement.</li>
+                <li>Reduced API latency on Java/Spring Boot metadata microservices by <strong>~20%</strong> through request flow refactoring and in-memory caching on hot paths; root cause identified via React performance profiling.</li>
+                <li>Replaced synchronous metadata sync with <strong>Kafka</strong> event-driven pipeline; decoupled 5 frontend-triggering consumers and resolved timeout failures blocking UI provisioning workflows during peak load.</li>
+                <li>Reduced MySQL metadata lookup from <strong>~120ms → ~80ms</strong> by rewriting N+1 queries and adding composite indexes; built Prometheus/Grafana dashboards for real-time service health visibility.</li>
+                <li>Exposed metadata APIs over <strong>gRPC</strong> with Protobuf contracts; built TypeScript client layer consumed by the React frontend, enforcing type-safe contracts across 4 downstream services.</li>
+                <li>Deployed microservices on <strong>Amazon EKS</strong> with liveness/readiness probes and HPA; reduced pod restart incidents during traffic spikes. Improved CI/CD coverage with JUnit + Cypress tests across 9 onboarding workflows (Jenkins).</li>
               </ul>
             </div>
           </div>
 
+          <!-- Bharti Airtel -->
           <div class="item2">
-            <div class="title">Wing Communications — Software Engineer</div>
-            <div class="meta">Oct 2020 – Aug 2022 · React.js · Java · Spring Boot · Kafka · WebSocket · MySQL · Jenkins</div>
+            <div class="title">Bharti Airtel — Java Developer</div>
+            <div class="meta">May 2021 – Aug 2022 · Hyderabad, India · Java · Spring Boot · Angular · MySQL · Spring Security · JUnit 5</div>
 
             <div class="desc" style="margin-top:10px;">
               <span class="hl hl-green" style="font-size:14px; box-shadow:none; border-width:3px;">Full Stack</span>
-              <span class="hl hl-purple" style="font-size:14px; box-shadow:none; border-width:3px;">Kafka</span>
-              <span class="hl hl-orange" style="font-size:14px; box-shadow:none; border-width:3px;">SQL Tuning</span>
+              <span class="hl hl-purple" style="font-size:14px; box-shadow:none; border-width:3px;">Microservices</span>
+              <span class="hl hl-orange" style="font-size:14px; box-shadow:none; border-width:3px;">Telecom</span>
             </div>
 
             <div class="desc" style="margin-top:12px;">
               <ul style="margin:0; padding-left:18px; line-height:1.85;">
-                <li>Designed and shipped three self-serve onboarding flows end-to-end (<strong>React.js + Spring Boot</strong>), cutting activation time from <strong>2–3 days → under 4 hours</strong> and eliminating <strong>15 manual ops interventions/week</strong>.</li>
-                <li>Built real-time account status dashboard in <strong>React (WebSocket)</strong> backed by Kafka event streaming, replacing a 30-second DB polling loop and cutting DB read load <strong>40%</strong> during peak windows.</li>
-                <li>Resolved a recurring <strong>2–3 second UI stall</strong> traced to 5 unindexed MySQL queries via frontend profiling; redesigned indexes and rewrote query logic, reducing median API latency from <strong>110ms → 65ms</strong>.</li>
-                <li>Eliminated <strong>4–5 nightly Jenkins CI/CD failures/week</strong> via per-suite rollback transactions; standardized frontend pipeline (ESLint, Prettier, Vite), recovering <strong>3 engineering hours/week</strong>.</li>
+                <li>Developed <strong>Spring Boot REST APIs</strong> for customer lifecycle management covering billing, service activation, and CRM integration across telecom operational workflows.</li>
+                <li>Built <strong>Angular UI</strong> for internal ops teams managing service provisioning; unified CRM and billing status views to reduce manual ticket resolution steps.</li>
+                <li>Optimized MySQL billing query performance by rewriting N+1 ORM queries and adding targeted indexes on high-volume subscriber data tables.</li>
+                <li>Refactored monolithic billing module into <strong>4 Spring Boot microservices</strong>; improved fault isolation and moved from bi-weekly to per-service deployments.</li>
+                <li>Implemented <strong>Spring Security</strong> authentication with RBAC across customer and internal portals for three user tiers (customer, agent, admin).</li>
+                <li>Built <strong>JUnit 5 + Mockito</strong> test suites covering billing and activation workflows; maintained strong code coverage across Agile sprints.</li>
               </ul>
             </div>
           </div>
 
-          <!-- Role: Google Developer Student Clubs — Project Lead -->
+          <!-- Google Developer Student Clubs -->
           <div class="item2">
             <div class="title">Google Developer Student Clubs — Project Lead</div>
             <div class="meta">Jun 2020 – Apr 2021 · Community · Web · Cloud · Leadership · Hyderabad, India</div>
@@ -148,21 +198,14 @@
 
             <div class="desc" style="margin-top:12px;">
               <ul style="margin:0; padding-left:18px; line-height:1.85;">
-                <li>Selected as a <strong>GDSC Lead (2021)</strong> among <strong>250+ students across India</strong>.
-                </li>
-                <li>Founded and scaled a technical community within the college, mentoring students into future leads.
-                </li>
-                <li>Conducted hands-on workshops on <strong>Web Development, Docker, Kotlin, Kubernetes, Git, and
-                    Cloud</strong>.</li>
-                <li>Organized and led multiple technical events, workshops, and study jams throughout the academic year.
-                </li>
-                <li>Acted as the primary bridge between Google Developer ecosystem resources and student developers.
-                </li>
+                <li>Selected as a <strong>GDSC Lead (2021)</strong> among <strong>250+ students across India</strong>.</li>
+                <li>Founded and scaled a technical community within the college, mentoring students into future leads.</li>
+                <li>Conducted hands-on workshops on <strong>Web Development, Docker, Kotlin, Kubernetes, Git, and Cloud</strong>.</li>
+                <li>Organized and led multiple technical events, workshops, and study jams throughout the academic year.</li>
+                <li>Acted as the primary bridge between Google Developer ecosystem resources and student developers.</li>
               </ul>
             </div>
           </div>
-
-          <!-- Note: The Sparks Foundation role has been removed as requested -->
 
         </div>
       </div>
